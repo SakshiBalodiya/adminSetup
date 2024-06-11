@@ -453,8 +453,17 @@
                                     <li>
                                         <div class="dropdown-divider mb-0"></div>
                                     </li>
-                                    <li><a class="dropdown-item" href="javascript:;"><i
-                                                class='bx bx-log-out-circle'></i><span>Logout</span></a>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}" class="logout_btn">
+                                            @csrf
+                                            <i class=" bx bx-log-out-circle"></i>
+                                            <a href="route('logout')" class=" px-0" onclick="event.preventDefault();
+                                                            this.closest('form').submit();">
+                                                {{ __('Log Out') }}
+                                        </a>
+                                        </form>
+        
+        
                                     </li>
                                 </ul>
                             </div>
@@ -475,14 +484,14 @@
                     <nav class="navbar navbar-expand-xl w-100">
                         <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
                             <li class="nav-item dropdown">
-                                <a href="{{ url('dashboard') }}"  class="nav-link">
+                                <a href="{{ url('dashboard') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-home-circle'></i>
                                     </div>
                                     <div class="menu-title">Dashboard</div>
                                 </a>
 
                             <li class="nav-item dropdown">
-                                <a href="{{ url('users') }}"  class="nav-link">
+                                <a href="{{ url('users') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-user'></i>
                                     </div>
                                     <div class="menu-title">Users</div>
