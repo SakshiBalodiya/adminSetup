@@ -16,7 +16,7 @@ class CreateStaffTable extends Migration
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('userId')->unique();
-            $table->string('image')->nullable();
+            $table->binary('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('userId')->references('id')->on('users');

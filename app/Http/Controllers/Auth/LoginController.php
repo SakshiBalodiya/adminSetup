@@ -36,10 +36,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
     public function create()
     {
         return view('auth.login');
@@ -50,18 +50,19 @@ class LoginController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+     
         $user = Auth::user();
         return redirect('/dashboard');
 
     }
     public function destroy(Request $request)
     {
-        Log::info('Logging out', ['user_id' => Auth::id()]);
+        \Log::info('Logging out', ['user_id' => Auth::id()]);
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+        
 
         return redirect('/login');
     }

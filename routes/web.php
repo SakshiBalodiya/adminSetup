@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +25,13 @@ Route::get('/', function () {
 
 
 Auth::routes();
-Route::get('users', [UserController::class, 'admin_index']);
-Route::get('adduser', [UserController::class, 'admin_create']);
+Route::get('staff', [StaffController::class, 'admin_index']);
+Route::get('addstaff', [StaffController::class, 'admin_create']);
+Route::get('editstaff', [StaffController::class, 'admin_edit']);
 
-Route::get('product', [ProductController::class, 'admin_index']);
+
 Route::get('dashboard', [DashboardController::class, 'admin_index']);
+
+
+
+Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');

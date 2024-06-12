@@ -113,8 +113,7 @@
                                     <div class="border p-4 rounded">
                                         <div class="text-center">
                                             <h3 class="">Sign Up</h3>
-                                            <p>Already have an account? <a
-                                                    href="authentication-signin-with-header-footer.html">Sign in here</a>
+                                            <p>Already have an account? <a href="{{ route('login') }}">Sign in here</a>
                                             </p>
                                         </div>
                                         {{-- <div class="d-grid">
@@ -139,7 +138,7 @@
                                                         class="form-control @error('name') is-invalid @enderror"
                                                         name="name" value="{{ old('name') }}" required
                                                         autocomplete="name" autofocus>
-
+   
                                                     @error('name')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -160,7 +159,7 @@
                                                     @enderror
                                                 </div> --}}
                                                 <div class="col-12">
-                                                    <label for="inputEmailAddress" class="form-label mt-2">Email Address</label>
+                                                    <label for="inputEmailAddress" class="form-label mt-2">Email</label>
                                                     <input id="email" type="email"
                                                         class="form-control  @error('email') is-invalid @enderror"
                                                         name="email" value="{{ old('email') }}" required

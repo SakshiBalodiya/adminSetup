@@ -7,13 +7,13 @@
            
                 <div class="col-xl-10 mx-auto">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                        <div class="breadcrumb-title pe-3">Staff</div>
+                        <div class="breadcrumb-title pe-3"><a href="{{ url('staff') }}">Staff</a></div>
                         <div class="ps-3">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0 p-0">
                                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-user"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Add Staff</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Staff</li>
                                 </ol>
                             </nav>
                         </div>
@@ -92,7 +92,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 btn-align">
-                                        <button class="btn btn-primary" type="submit">Add Staff</button>
+                                        <button class="btn btn-primary" type="submit">Edit Staff</button>
                                     </div>
                                 </form>
                             </div>

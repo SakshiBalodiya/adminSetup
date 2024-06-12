@@ -26,8 +26,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'username' => $this->faker->unique()->userName(),
-            'mobileNo' => $this->faker->numerify('###-###-####'),
-            'role' => $this->faker->randomElement(['admin', 'subadmin', 'customer']),
+            'role' => $this->faker->randomElement(['admin', 'subadmin', 'staff']),
             'password' => '$2a$04$gakgwa1pSu7thZ1aBgxxYO2RFaApGDQViGT2YnYubUMfDlPLBvSp2', // password admin#2024
             'remember_token' => Str::random(10),
         ];
