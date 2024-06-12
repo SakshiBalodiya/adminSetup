@@ -1,3 +1,10 @@
+<?php
+
+function page_url()
+{
+    return sprintf('%s://%s%s', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http', $_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']);
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -477,25 +484,48 @@
                             <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
                         </div>
                         <div>
-                            <h4 class="logo-text">Rukada</h4>
+                            <h4 class="logo-text">Rocker</h4>
                         </div>
                         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
                         </div>
                     </div>
                     <nav class="navbar navbar-expand-xl w-100">
                         <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
-                            <li class="nav-item dropdown">
+
+                            <li <?php if (str_contains(page_url(), 'dashboard')) {
+                                echo 'class="mm-active"';
+                            } ?>>
                                 <a href="{{ url('dashboard') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-home-circle'></i>
                                     </div>
                                     <div class="menu-title">Dashboard</div>
                                 </a>
+                            </li>
 
-                            <li class="nav-item dropdown">
+                            <li <?php if (str_contains(page_url(), 'staff')) {
+                                echo 'class="mm-active"';
+                            } ?>>
+
                                 <a href="{{ url('staff') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-user'></i>
                                     </div>
                                     <div class="menu-title">Staff</div>
+                                </a>
+
+                            </li>
+                            <li <?php if (str_contains(page_url(), 'attendance')) { echo 'class="mm-active"'; } ?>>
+                                <a href="{{ url('attendance') }}" class="nav-link">
+                                    <div class="parent-icon"><i class='bx bx-spreadsheet'></i>
+                                    </div>
+                                    <div class="menu-title">Attendance</div>
+                                </a>
+
+                            </li>
+                            <li <?php if (str_contains(page_url(), 'calender')) { echo 'class="mm-active"'; } ?>>
+                                <a href="{{ url('calender') }}" class="nav-link">
+                                    <div class="parent-icon"><i class='bx bx-calendar-week'></i>
+                                    </div>
+                                    <div class="menu-title">Calender</div>
                                 </a>
 
                             </li>
@@ -533,6 +563,16 @@
 
     <!--app JS-->
     <script src="{{ asset('admin/js/app.js') }}"></script>
+    <script>
+        function page_url() {
+            return sprintf(
+                "%s://%s%s",
+                isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+                $_SERVER['SERVER_NAME'],
+                $_SERVER['REQUEST_URI']
+            );
+        }
+    </script>
     <script>
         // new PerfectScrollbar(".app-container")
         $(function() {
