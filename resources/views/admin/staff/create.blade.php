@@ -7,11 +7,11 @@
            
                 <div class="col-xl-10 mx-auto">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                        <div class="breadcrumb-title pe-3">Staff</div>
+                        <div class="breadcrumb-title pe-3"><a href="{{ url('staff') }}">Staff</a></div>
                         <div class="ps-3">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-user"></i></a>
+                                    <li class="breadcrumb-item"><i class="bx bx-user"></i>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">Add Staff</li>
                                 </ol>

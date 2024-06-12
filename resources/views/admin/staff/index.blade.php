@@ -20,7 +20,7 @@
                                 <div class="col-lg-8 col-xl-8">
                                     <form class="float-lg-end">
                                         <div class="row row-cols-lg-2 row-cols-xl-auto g-2">
-                                            <a href="{{ url('adduser') }}" 
+                                            <a href="{{ url('addstaff') }}" 
                                                 class="btn btn-primary mb-3 mb-lg-0"><i class='bx bxs-plus-square'></i>Add
                                                 Staff</a>
                                         </div>
@@ -54,7 +54,7 @@
                                             class="bx bxl-linkedin"></i></a>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xl-6"><a href="#" class="btn btn-outline-primary radius-15"
+                                    <div class="col-xl-6"><a href="{{ url('editstaff') }}"  class="btn btn-outline-primary radius-15"
                                             style="width : 100%;">Edit
                                         </a></div>
                                     <div class="col-xl-6"><a href="#"

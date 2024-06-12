@@ -5704,3 +5704,19 @@ input::placeholder {
 
 
 }
+
+/* admin setup css */
+.btn-align{
+	display: flex;
+	justify-content: end;
+}
+.btn-align button{
+	width: 20%;
+}
+.breadcrumb-item i{
+	color: #008cff;
+}
+.breadcrumb-title a{
+	color: #4c5258;
+	font-size: 20px;
+}
