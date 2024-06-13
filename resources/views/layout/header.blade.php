@@ -19,6 +19,7 @@ function page_url()
     <link href="{{ asset('admin/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/plugins/fullcalendar/css/main.min.css') }}" rel="stylesheet" />
     <!-- loader-->
     <link href="{{ asset('admin/css/pace.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('admin/js/pace.min.js') }}"></script>
@@ -31,6 +32,7 @@ function page_url()
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="{{ asset('admin/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('admin/css/semi-dark.css') }}" />
+ 
     <link rel="stylesheet" href="{{ asset('admin/css/header-colors.css') }}" />
     <title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
 </head>
@@ -513,7 +515,9 @@ function page_url()
                                 </a>
 
                             </li>
-                            <li <?php if (str_contains(page_url(), 'attendance')) { echo 'class="mm-active"'; } ?>>
+                            <li <?php if (str_contains(page_url(), 'attendance')) {
+                                echo 'class="mm-active"';
+                            } ?>>
                                 <a href="{{ url('attendance') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-spreadsheet'></i>
                                     </div>
@@ -521,7 +525,9 @@ function page_url()
                                 </a>
 
                             </li>
-                            <li <?php if (str_contains(page_url(), 'calender')) { echo 'class="mm-active"'; } ?>>
+                            <li <?php if (str_contains(page_url(), 'calender')) {
+                                echo 'class="mm-active"';
+                            } ?>>
                                 <a href="{{ url('calender') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-calendar-week'></i>
                                     </div>
@@ -560,7 +566,7 @@ function page_url()
     <script src="{{ asset('admin/plugins/chartjs/js/chart.js') }}"></script>
     <script src="{{ asset('admin/js/index.js') }}"></script>
     <script src="{{ asset('https://unpkg.com/feather-icons') }}"></script>
-
+  
     <!--app JS-->
     <script src="{{ asset('admin/js/app.js') }}"></script>
     <script>
