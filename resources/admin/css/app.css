@@ -5738,3 +5738,37 @@ input::placeholder {
     bottom: 0;
     overflow: hidden !important;
 }
+.selected-date {
+	background-color: lightblue !important;
+}
+
+
+.fc-day-saturday {
+	background-color: lightblue;
+}
+
+.fc-day-sunday {
+	background-color: lightblue;
+}
+
+.fc-day-alternate-saturday {
+	
+	background-color: #daffda;
+	
+}
+
+.fc-col-header-cell {
+	background-color: #ffff;
+}
+
+.fc-direction-ltr .fc-button-group>.fc-button:not(:first-child) {
+	margin-left: -1px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	display: none;
+}
+
+.fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
+	border-top-right-radius: .25em;
+	border-bottom-right-radius: .25em;
+}
