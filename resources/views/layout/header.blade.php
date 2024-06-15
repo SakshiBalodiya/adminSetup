@@ -15,11 +15,18 @@ function page_url()
     <!--favicon-->
     <link rel="icon" href="{{ asset('admin/images/favicon-32x32.png') }}" type="image/png" />
     <!--plugins-->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/plugins/fullcalendar/css/main.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/plugins/datetimepicker/css/classic.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/plugins/datetimepicker/css/classic.time.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/plugins/datetimepicker/css/classic.date.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet"
+        href="{{ asset('admin/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css') }}">
     <!-- loader-->
     <link href="{{ asset('admin/css/pace.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('admin/js/pace.min.js') }}"></script>
@@ -32,7 +39,7 @@ function page_url()
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="{{ asset('admin/css/dark-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('admin/css/semi-dark.css') }}" />
- 
+
     <link rel="stylesheet" href="{{ asset('admin/css/header-colors.css') }}" />
     <title>Rocker - Bootstrap 5 Admin Dashboard Template</title>
 </head>
@@ -450,25 +457,18 @@ function page_url()
                                     <li><a class="dropdown-item" href="javascript:;"><i
                                                 class="bx bx-cog"></i><span>Settings</span></a>
                                     </li>
-                                    <li><a class="dropdown-item" href="javascript:;"><i
-                                                class='bx bx-home-circle'></i><span>Dashboard</span></a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;"><i
-                                                class='bx bx-dollar-circle'></i><span>Earnings</span></a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="javascript:;"><i
-                                                class='bx bx-download'></i><span>Downloads</span></a>
-                                    </li>
+
                                     <li>
                                         <div class="dropdown-divider mb-0"></div>
                                     </li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}" class="logout_btn">
                                             @csrf
-                                            <i class=" bx bx-log-out-circle"></i>
-                                            <a href="route('logout')" class=" px-0"
+
+                                            <a href="route('logout')" class="dropdown-item"
                                                 onclick="event.preventDefault();
                                                             this.closest('form').submit();">
+                                                <i class=" bx bx-log-out-circle"></i>
                                                 {{ __('Log Out') }}
                                             </a>
                                         </form>
@@ -535,6 +535,16 @@ function page_url()
                                 </a>
 
                             </li>
+                            <li <?php if (str_contains(page_url(), 'report')) {
+                                echo 'class="mm-active"';
+                            } ?>>
+                                <a href="{{ url('report') }}" class="nav-link">
+                                    <div class="parent-icon"><i class='bx bx-clipboard'></i>
+                                    </div>
+                                    <div class="menu-title">Report</div>
+                                </a>
+
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -563,10 +573,11 @@ function page_url()
     <script src="{{ asset('admin/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('admin/plugins/vectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('admin/plugins/chartjs/js/chart.js') }}"></script>
+    <script src="{{ asset('admin/plugins/chartjs/js/Chart.min.js') }}"></script>
+    <script src="{{ asset('admin/chartjs/js/Chart.extension.js') }}"></script>
     <script src="{{ asset('admin/js/index.js') }}"></script>
     <script src="{{ asset('https://unpkg.com/feather-icons') }}"></script>
-  
+
     <!--app JS-->
     <script src="{{ asset('admin/js/app.js') }}"></script>
     <script>

@@ -80,20 +80,29 @@
                 add_saturday: {
                     text: 'Saturday',
                     click: function() {
+                        var checkboxnew = document.getElementById('saturdayCheckboxnew');
+                        if (checkboxnew) {
+                            checkboxnew.checked = true;
+                        }
                         toggleDayClass('fc-day-sat', 'fc-day-saturday');
-
-                    },
+                    }
                 },
                 add_sunday: {
                     text: 'Sunday',
                     click: function() {
+                        var checkboxnew = document.getElementById('sundayCheckboxnew');
                         toggleDayClass('fc-day-sun', 'fc-day-sunday');
+                        if (checkboxnew) {
+                            checkboxnew.checked = true;
+                        }
                     }
                 },
                 add_alternate: {
                     text: 'Alternate Saturday',
                     click: function() {
-                        toggleDayClass('fc-day-sat', 'fc-day-alternate-saturday', true);
+                        var checkbox = document.getElementById('alternateCheckbox');
+                        toggleDayClass('fc-day-sat', 'fc-day-alternate-saturday', checkbox.checked,
+                            true);
                     }
                 }
             },
@@ -104,6 +113,10 @@
 
             },
             initialView: 'dayGridMonth',
+            datesSet: function() {
+
+                addCheckboxes();
+            },
             showNonCurrentDates: false,
             initialDate: new Date(),
             // navLinks: true, // can click day/week names to navigate views
@@ -115,6 +128,7 @@
             // businessHours: true,
             button: true,
             dayMaxEvents: true,
+
             events: [],
             dayCellContent: function(arg) {
 
@@ -124,7 +138,7 @@
                 switchInput.classList.add('form-check-input');
 
                 switchInput.addEventListener('change', function() {
-                    var tdElement = switchInput.closest('.fc-daygrid-day',);
+                    var tdElement = switchInput.closest('.fc-daygrid-day', );
                     if (this.checked) {
                         var formattedDate = arg.date.toLocaleString("en-IN").slice(0, 10);
                         console.log(formattedDate)
@@ -195,17 +209,54 @@
                 days.forEach((day, index) => {
                     if (alternate) {
                         if (index % 2 === 0) {
-                            day.classList.toggle(customClass);
-                            var checkbox = day.querySelector('.form-check-input');
 
+                            day.classList.add('fc-day-alternate');
+                            day.classList.remove('fc-day-regular', 'fc-day-saturday');
+
+
+                            if (day.classList.contains('saturday')) {
+                                day.classList.add('fc-day-alternate-saturday');
+                            }
+                            var checkbox = day.querySelector('.form-check-input');
                             if (checkbox) {
                                 checkbox.checked = true;
                             }
+
+                        } else {
+                            // var saturdayButton = document.querySelector(
+                            //     '.fc-add_saturday-button');
+                            // var sundayButton = document.querySelector('.fc-add_sunday-button');
+
+                            // if (saturdayButton && !saturdayButton.querySelector('input')) {
+                            //     var saturdayCheckbox = document.createElement('input');
+                            //     saturdayCheckbox.type = 'checkbox';
+                            //     if (checkbox) {
+                            //         checkbox.checked = true;
+                            //     }
+                            // }
+
+                            day.classList.add('fc-day-regular');
+                            day.classList.remove('fc-day-alternate',
+                                'fc-day-alternate-saturday');
+                            var checkbox = day.querySelector('.form-check-input');
+                            if (checkbox) {
+                                checkbox.checked = false;
+                            }
+                            // If it's Saturday, ensure it has the Saturday class
+                            if (day.classList.contains('saturday')) {
+                                day.classList.add('fc-day-saturday');
+
+                            }
                         }
+                        // Toggle the checkbox
+
                     } else {
                         day.classList.toggle(customClass);
                         var checkbox = day.querySelector('.form-check-input');
                         $('#dayModal').modal('show');
+                        day.classList.remove('fc-day-regular');
+                        day.classList.add('fc-day-saturday');
+
                         if (checkbox) {
                             checkbox.checked = true;
                         }
@@ -216,6 +267,43 @@
             });
 
         }
+
+        function addCheckboxes() {
+            // Add checkbox for Saturday button
+            var saturdayButton = document.querySelector('.fc-add_saturday-button');
+            if (saturdayButton && !saturdayButton.querySelector('input')) {
+                var saturdayCheckboxnew = document.createElement('input');
+                saturdayCheckboxnew.type = 'checkbox';
+                saturdayCheckboxnew.id = 'saturdayCheckboxnew';
+                saturdayButton.innerHTML = '';
+                saturdayButton.appendChild(saturdayCheckboxnew);
+                saturdayButton.appendChild(document.createTextNode(' Saturday'));
+
+            }
+
+            // Add checkbox for Sunday button
+            var sundayButton = document.querySelector('.fc-add_sunday-button');
+            if (sundayButton && !sundayButton.querySelector('input')) {
+                var sundayCheckboxnew = document.createElement('input');
+                sundayCheckboxnew.type = 'checkbox';
+                sundayCheckboxnew.id = 'sundayCheckboxnew';
+                sundayButton.innerHTML = '';
+                sundayButton.appendChild(sundayCheckboxnew);
+                sundayButton.appendChild(document.createTextNode('Sunday'));
+            }
+
+            // Add checkbox for Alternate Saturday button
+            var alternateButton = document.querySelector('.fc-add_alternate-button');
+            if (alternateButton && !alternateButton.querySelector('input')) {
+                var alternateCheckbox = document.createElement('input');
+                alternateCheckbox.type = 'checkbox';
+                alternateCheckbox.id = 'alternateCheckbox';
+                alternateButton.innerHTML = '';
+                alternateButton.appendChild(alternateCheckbox);
+                alternateButton.appendChild(document.createTextNode(' Alternate Saturday'));
+            }
+        }
+
 
     });
 </script>
