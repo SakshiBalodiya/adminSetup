@@ -9,6 +9,7 @@ function page_url()
 <html lang="en">
 
 <head>
+    {{-- <link rel="stylesheet" type="text/css" href="./public/css/app.css"/> --}}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,10 +46,12 @@ function page_url()
 </head>
 
 <body>
+
     <!--wrapper-->
     <div class="wrapper">
         <!--sidebar wrapper -->
         <div class="wrapper">
+      
             <!--start header wrapper-->
             <div class="header-wrapper">
                 <!--start header -->
@@ -61,6 +64,7 @@ function page_url()
                                 </div>
                                 <div class="">
                                     <h4 class="logo-text">Rocker</h4>
+                          
                                 </div>
                             </div>
                             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>

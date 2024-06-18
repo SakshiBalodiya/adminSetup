@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StaffFactory extends Factory
@@ -12,10 +13,12 @@ class StaffFactory extends Factory
      * @return array
      */
     public function definition()
-    {
+    {    
+        $users = User::all()->pluck('id')->toArray();
         return [
-            //
-            'image' => $this->faker->image(null, 360, 360, 'human', true),
+            'userId'=>$this->faker->unique()->randomElement($users),
+            'image' => $this->faker->image(null, 360, 360, 'people', true),
+            'descriptor' => 'xyz',
         ];
     }
 }

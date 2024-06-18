@@ -78,31 +78,48 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             customButtons: {
                 add_saturday: {
-                    text: 'Saturday',
+
                     click: function() {
                         var checkboxnew = document.getElementById('saturdayCheckboxnew');
                         if (checkboxnew) {
-                            checkboxnew.checked = true;
+                            checkboxnew.checked = !checkboxnew.checked;
                         }
-                        toggleDayClass('fc-day-sat', 'fc-day-saturday');
+                        if (checkboxnew.checked) {
+                            toggleDayClass('fc-day-sat', 'fc-day-saturday');
+                        } else {
+                            removeDayClass('fc-day-sat', 'fc-day-saturday');
+                        }
                     }
                 },
                 add_sunday: {
-                    text: 'Sunday',
+
                     click: function() {
                         var checkboxnew = document.getElementById('sundayCheckboxnew');
-                        toggleDayClass('fc-day-sun', 'fc-day-sunday');
+
                         if (checkboxnew) {
-                            checkboxnew.checked = true;
+                            checkboxnew.checked = !checkboxnew.checked;
+                        }
+                        if (checkboxnew.checked) {
+                            toggleDayClass('fc-day-sun', 'fc-day-sunday');
+                        } else {
+                            removeDayClass('fc-day-sun', 'fc-day-sunday');
                         }
                     }
                 },
                 add_alternate: {
-                    text: 'Alternate Saturday',
+
                     click: function() {
-                        var checkbox = document.getElementById('alternateCheckbox');
-                        toggleDayClass('fc-day-sat', 'fc-day-alternate-saturday', checkbox.checked,
-                            true);
+                        var checkboxnew = document.getElementById('alternateCheckboxnew');
+
+                        if (checkboxnew) {
+                            checkboxnew.checked = !checkboxnew.checked;
+                        }
+                        
+                        if (checkboxnew.checked) {
+                            toggleDayClass('fc-day-sat', 'fc-day-alternate', true);
+                        } else {
+                            removeDayClass('fc-day-sat', 'fc-day-alternate');
+                        }
                     }
                 }
             },
@@ -176,6 +193,7 @@
         });
 
         calendar.render();
+
         document.getElementById('confirmHolidayButton').addEventListener('click', function() {
             console.log('Ok button clicked');
             console.log('selectedDateElement:', selectedDateElement);
@@ -189,8 +207,7 @@
             }
         });
 
-
-        function toggleDayClass(dayClass, customClass, alternate) {
+        function toggleDayClass(dayClass, customClass, alternate = false) {
             var days = document.querySelectorAll('.' + dayClass);
 
             var modalDateSpan = document.getElementById('modalDay');
@@ -198,7 +215,7 @@
                 modalDateSpan.textContent = 'Mark all Saturdays as non-working days.';
             } else if (dayClass === 'fc-day-sun' && customClass === 'fc-day-sunday') {
                 modalDateSpan.textContent = 'Mark all Sundays as non-working days.';
-            } else if (dayClass === 'fc-day-sat' && customClass === 'fc-day-alternate-saturday') {
+            } else if (dayClass === 'fc-day-sat' && customClass === 'fc-day-alternate') {
                 modalDateSpan.textContent = 'Mark alternate Saturdays as non-working days.';
             }
             $('#dayModal').modal('show');
@@ -206,8 +223,11 @@
             var newConfirmButton = confirmButton.cloneNode(true);
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             newConfirmButton.addEventListener('click', function() {
+              
                 days.forEach((day, index) => {
+                    
                     if (alternate) {
+                        console.log('alternate');
                         if (index % 2 === 0) {
 
                             day.classList.add('fc-day-alternate');
@@ -223,17 +243,6 @@
                             }
 
                         } else {
-                            // var saturdayButton = document.querySelector(
-                            //     '.fc-add_saturday-button');
-                            // var sundayButton = document.querySelector('.fc-add_sunday-button');
-
-                            // if (saturdayButton && !saturdayButton.querySelector('input')) {
-                            //     var saturdayCheckbox = document.createElement('input');
-                            //     saturdayCheckbox.type = 'checkbox';
-                            //     if (checkbox) {
-                            //         checkbox.checked = true;
-                            //     }
-                            // }
 
                             day.classList.add('fc-day-regular');
                             day.classList.remove('fc-day-alternate',
@@ -255,7 +264,7 @@
                         var checkbox = day.querySelector('.form-check-input');
                         $('#dayModal').modal('show');
                         day.classList.remove('fc-day-regular');
-                        day.classList.add('fc-day-saturday');
+                        // day.classList.add('fc-day-saturday');
 
                         if (checkbox) {
                             checkbox.checked = true;
@@ -268,8 +277,9 @@
 
         }
 
+
         function addCheckboxes() {
-            // Add checkbox for Saturday button
+
             var saturdayButton = document.querySelector('.fc-add_saturday-button');
             if (saturdayButton && !saturdayButton.querySelector('input')) {
                 var saturdayCheckboxnew = document.createElement('input');
@@ -279,9 +289,10 @@
                 saturdayButton.appendChild(saturdayCheckboxnew);
                 saturdayButton.appendChild(document.createTextNode(' Saturday'));
 
+
             }
 
-            // Add checkbox for Sunday button
+
             var sundayButton = document.querySelector('.fc-add_sunday-button');
             if (sundayButton && !sundayButton.querySelector('input')) {
                 var sundayCheckboxnew = document.createElement('input');
@@ -289,21 +300,32 @@
                 sundayCheckboxnew.id = 'sundayCheckboxnew';
                 sundayButton.innerHTML = '';
                 sundayButton.appendChild(sundayCheckboxnew);
-                sundayButton.appendChild(document.createTextNode('Sunday'));
+                sundayButton.appendChild(document.createTextNode(' Sunday'));
             }
 
             // Add checkbox for Alternate Saturday button
             var alternateButton = document.querySelector('.fc-add_alternate-button');
             if (alternateButton && !alternateButton.querySelector('input')) {
-                var alternateCheckbox = document.createElement('input');
-                alternateCheckbox.type = 'checkbox';
-                alternateCheckbox.id = 'alternateCheckbox';
+                var alternateCheckboxnew = document.createElement('input');
+                alternateCheckboxnew.type = 'checkbox';
+                alternateCheckboxnew.id = 'alternateCheckboxnew';
                 alternateButton.innerHTML = '';
-                alternateButton.appendChild(alternateCheckbox);
+                alternateButton.appendChild(alternateCheckboxnew);
                 alternateButton.appendChild(document.createTextNode(' Alternate Saturday'));
             }
         }
 
+        function removeDayClass(dayClass, toggleClass) {
+            var days = document.querySelectorAll('.' + dayClass);
+            days.forEach(function(day) {
+                day.classList.remove(toggleClass);
+                var checkbox = day.querySelector('.form-check-input');
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+            });
+
+        }
 
     });
 </script>

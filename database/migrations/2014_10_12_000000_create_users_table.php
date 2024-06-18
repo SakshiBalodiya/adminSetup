@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name',100);
             $table->string('email',100)->unique();
             $table->string('username',100)->unique();
+            $table->string('mobileNo',18)->nullable();
             $table->enum('role',['admin','subadmin','staff']);
-            // $table->string('mobileNo',18)->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
