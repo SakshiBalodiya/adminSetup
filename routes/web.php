@@ -32,6 +32,7 @@ Route::get('dashboard', [DashboardController::class, 'admin_index']);
 
 Route::get('staff', [StaffController::class, 'admin_index']);
 Route::get('addstaff', [StaffController::class, 'admin_create']);
+Route::post('addstaff/store', [StaffController::class, 'admin_store'])->name('addstaff.store');
 Route::get('editstaff', [StaffController::class, 'admin_edit']);
 
 Route::get('attendance', [AttendanceController::class, 'admin_index']);

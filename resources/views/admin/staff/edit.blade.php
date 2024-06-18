@@ -2,9 +2,7 @@
 <div class="wrapper">
     <div class="page-wrapper">
         <div class="page-content">
-         
             <div class="row">
-           
                 <div class="col-xl-10 mx-auto">
                     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                         <div class="breadcrumb-title pe-3"><a href="{{ url('staff') }}">Staff</a></div>
