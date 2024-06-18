@@ -35,35 +35,38 @@
             <!--end breadcrumb-->
 
             <hr />
-          
-                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
-                    @foreach ($staff as $staff)
+
+            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+                @foreach ($staff as $staff)
                     <div class="col">
                         <div class="card radius-15">
                             <div class="card-body text-center">
                                 <div class="p-4 border radius-15">
-                                    <img src="{{$staff->image}}" width="110"
-                                        height="110" class="rounded-circle shadow" alt="">
-                                    <h5 class="mb-0 mt-5">{{$staff->name}}</h5>
-                                    <p class="mb-0">{{$staff->username}}</p>
-                                    <p class="mb-0">{{$staff->mobileNo}}</p>
-                                    <p class="mb-3">{{$staff->email}}</p>
                                  
+                                    <img src="{{ $staff->image }}" width="110" height="110"
+                                        class="rounded-circle shadow" alt="">
+                                    <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
+                                    <p class="mb-0">{{ $staff->username }}</p>
+                                    <p class="mb-0">{{ $staff->mobileNo }}</p>
+                                    <p class="mb-3">{{ $staff->email }}</p>
+
                                     <div class="row">
-                                        <div class="col-xl-6"><a href="{{ url('editstaff') }}"
-                                                class="btn btn-outline-primary radius-15" style="width : 100%;">Edit
+                                        <div class="col-xl-6"><a href="{{ url('staff/' . $staff->id . '/editstaff') }}"
+                                                class="btn btn-outline-primary radius-15" style="width : 100%;"><i
+                                                    class='bx bxs-edit'></i>
                                             </a></div>
                                         <div class="col-xl-6"><a href="#"
-                                                class="btn btn-outline-primary radius-15" style="width : 100%;">Delete
+                                                class="btn btn-outline-primary radius-15" style="width : 100%;"><i
+                                                    class='bx bxs-trash'></i>
                                             </a></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-          
+                @endforeach
+            </div>
+
         </div>
     </div>
 </div>
