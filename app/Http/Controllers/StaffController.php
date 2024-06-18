@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Staff;
 
 use App\Models\Staff;
 use App\Models\User;
@@ -18,6 +19,10 @@ class StaffController extends Controller
     }
     public function admin_create()
     {
+
+        
+
+
         return view('admin.staff.create');
 
     }
