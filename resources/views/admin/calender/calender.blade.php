@@ -3,7 +3,7 @@
     <div class="page-wrapper">
         <div class="page-content">
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Applications</div>
+                <div class="breadcrumb-title pe-3">Dashboard</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -30,9 +30,9 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="dateModalLabel">Selected Date</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="modal-body">
                             You selected <span id="modalDate"></span>. Mark this date as a holiday?
@@ -44,8 +44,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" aria-labelledby="dayModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+                aria-labelledby="dayModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -59,8 +59,27 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="confirmButton"
-                                data-bs-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-primary" id="confirmButton">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                data-bs-backdrop="static" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{-- <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> --}}
+                        </div>
+                        <div class="modal-body">
+                            <span id="modalDayRemove"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="confirmRemove">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -114,7 +133,7 @@
                         if (checkboxnew) {
                             checkboxnew.checked = !checkboxnew.checked;
                         }
-                        
+
                         if (checkboxnew.checked) {
                             toggleDayClass('fc-day-sat', 'fc-day-alternate', true);
                         } else {
@@ -223,9 +242,9 @@
             var newConfirmButton = confirmButton.cloneNode(true);
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             newConfirmButton.addEventListener('click', function() {
-              
+
                 days.forEach((day, index) => {
-                    
+
                     if (alternate) {
                         console.log('alternate');
                         if (index % 2 === 0) {
@@ -237,11 +256,15 @@
                             if (day.classList.contains('saturday')) {
                                 day.classList.add('fc-day-alternate-saturday');
                             }
+                            
                             var checkbox = day.querySelector('.form-check-input');
                             if (checkbox) {
                                 checkbox.checked = true;
                             }
-
+                            var checkboxnew = document.getElementById('saturdayCheckboxnew');
+                            if (checkboxnew) {
+                                checkboxnew.checked = false;
+                            }
                         } else {
 
                             day.classList.add('fc-day-regular');
@@ -256,6 +279,10 @@
                                 day.classList.add('fc-day-saturday');
 
                             }
+                            // var checkboxnew = document.getElementById('alternateCheckboxnew');
+                            // if (checkboxnew) {
+                            //     checkboxnew.checked = false;
+                            // }
                         }
                         // Toggle the checkbox
 
@@ -316,15 +343,29 @@
         }
 
         function removeDayClass(dayClass, toggleClass) {
-            var days = document.querySelectorAll('.' + dayClass);
-            days.forEach(function(day) {
-                day.classList.remove(toggleClass);
-                var checkbox = day.querySelector('.form-check-input');
-                if (checkbox) {
-                    checkbox.checked = false;
-                }
-            });
 
+            var modalDate = document.getElementById('modalDayRemove');
+            if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
+                modalDate.textContent = 'Do you want to remove the selected Saturday?'
+            } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
+                modalDate.textContent = '    Do you want to remove the selected Sunday?';
+            } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
+                modalDate.textContent = 'Do you want to remove the alternate Saturday?';
+            }
+            $('#confirmModal').modal('show');
+            document.getElementById('confirmRemove').onclick = function() {
+                var days = document.querySelectorAll('.' + dayClass);
+                days.forEach(function(day) {
+                    day.classList.remove(toggleClass);
+                    var checkbox = day.querySelector('.form-check-input');
+
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+
+                });
+                $('#confirmModal').modal('hide');
+            }
         }
 
     });

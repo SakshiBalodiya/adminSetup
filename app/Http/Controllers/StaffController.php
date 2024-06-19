@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Staff;
 
-use App\Models\Staff;
 use App\Models\User;
 use DB;
 use Hash;
@@ -20,10 +19,6 @@ class StaffController extends Controller
     }
     public function admin_create()
     {
-
-        
-
-
         return view('admin.staff.create');
     }
 
@@ -88,19 +83,20 @@ class StaffController extends Controller
         $staff->descriptor = 'xyz';
 
         if (!empty($request->image)) {
-            $file = $request->file('image');
-            $staff->image = "data:image/png;base64," . base64_encode(file_get_contents($file));
-            if (!empty($file)) {
-                $staff->image = $file;
-            } else {
-                $staff->image = '';
-            }
+  
+            $staff->image = "data:image/png;base64," . base64_encode(file_get_contents($request->file('image')));
+       
         }
 
         $staff->save();
 
         return redirect('staff');
     }
-
+    public function admin_destroy($id)
+    {
+        $staff = Staff::find($id);
+        $staff->delete();
+        return redirect('staff');
+    }
 
 }

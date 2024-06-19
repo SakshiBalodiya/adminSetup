@@ -73,25 +73,6 @@
                                         @endif
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="validationCustomUsername" class="form-label">Phone
-                                            Number<span>*</span></label>
-                                        <div class="input-group"> <span class="input-group-text"
-                                                id="inputGroupPrepend"><i class="bx bx-phone"></i></span>
-                                            <input type="tel" maxlength="10" name="mobileNo" class="form-control"
-                                                id="validationCustomUsername" aria-describedby="inputGroupPrepend"
-                                                required>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="validationCustomUsername" class="form-label">Image<span>*</span></label>
-                                        <input id="image-uploadify" type="file" name="image" class="form-control"
-                                            id="inputGroupFile01" aria-label="default input example"
-                                            accept=".jpg,.jpeg,.png" required>
-                                    </div>
-
                                     {{-- <input type="file" name="image" class="form-control" id="inputGroupFile01"  accept=".jpg,.jpeg,.png"> --}}
                                     <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password<span>*</span></label>
@@ -115,6 +96,25 @@
                                         <div id="confirm-password-warning" class="text-warning" style="display:none">
                                             Passwords do not match.
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="validationCustomUsername" class="form-label">Phone
+                                            Number<span>*</span></label>
+                                        <div class="input-group"> <span class="input-group-text"
+                                                id="inputGroupPrepend"><i class="bx bx-phone"></i></span>
+                                            <input type="tel" maxlength="10" name="mobileNo" class="form-control"
+                                                id="validationCustomUsername" aria-describedby="inputGroupPrepend"
+                                                required>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="validationCustomUsername" class="form-label">Image<span>*</span></label>
+                                        <input id="image-uploadify" type="file" name="image" class="form-control"
+                                            id="inputGroupFile01" aria-label="default input example"
+                                            accept=".jpg,.jpeg,.png" required>
                                     </div>
 
                                     <div class="col-12 btn-align">
