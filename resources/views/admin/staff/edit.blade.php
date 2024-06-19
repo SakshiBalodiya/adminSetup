@@ -63,39 +63,48 @@
                                             <div class="invalid-feedback">Please choose a username.</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="validationCustomUsername" class="form-label">Phone Number</label>
-                                        <div class="input-group"> <span class="input-group-text"
-                                                id="inputGroupPrepend"><i class="bx bx-phone"></i></span>
-                                            <input type="text" class="form-control" name="mobileNo"
-                                                value="{{ $staff->mobileNo }}" id="validationCustomUsername"
-                                                aria-describedby="inputGroupPrepend">
 
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="validationCustomUsername" class="form-label">Image</label>
-                                        <input type="file" class="form-control" name="image" value="{{ $staff->image }}" id="inputGroupFile01"  accept=".jpg,.jpeg,.png" >
-                                        <p> <img src="{{ $staff->image }}" width="110" height="110"
-                                                class="rounded-circle shadow" alt=""></p>
-                                    </div>
                                     <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password</label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-lock"></i></span>
                                             <input type="password" name="password" class="form-control"
-                                                id="validationCustom05">
-                                        </div>
+                                            id="input4">
 
+                                        </div>
+                                        <div id="password-warning" class="text-warning" style="display:none">
+                                            Password should be at least 8 characters long.
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Confirm Password</label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-lock"></i></span>
                                             <input type="password" name="confirmpassword" class="form-control"
-                                                id="validationCustom05">
+                                            id="input5">
                                         </div>
+                                        <div id="confirm-password-warning" class="text-warning" style="display:none">
+                                            Passwords do not match.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="validationCustomUsername" class="form-label">Phone Number</label>
+                                        <div class="input-group"> <span class="input-group-text"
+                                                id="inputGroupPrepend"><i class="bx bx-phone"></i></span>
+                                            <input type="tel" maxlength="10" class="form-control"
+                                                name="mobileNo" value="{{ $staff->mobileNo }}"
+                                                id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="validationCustomUsername" class="form-label">Image</label>
+                                        <input type="file" class="form-control" name="image"
+                                            value="{{ $staff->image }}" id="inputGroupFile01"
+                                            accept=".jpg,.jpeg,.png">
+                                        <p> <img src="{{ $staff->image }}" width="110" height="110"
+                                                class="rounded-circle shadow" alt=""></p>
                                     </div>
                                     <div class="col-12 btn-align">
                                         <input type="text" value="{{ $staff->id }}" name="id" hidden>
@@ -111,3 +120,29 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#input4').on('input', function() {
+            var password = $(this).val();
+            var passwordLength = password.length;
+
+            if (passwordLength < 8) {
+                $('#password-warning').show();
+            } else {
+                $('#password-warning').hide();
+            }
+        });
+    });
+    $(document).ready(function() {
+        $('#input4, #input5').on('input', function() {
+            var password = $('#input4').val();
+            var confirmPassword = $('#input5').val();
+
+            if (password !== confirmPassword) {
+                $('#confirm-password-warning').show();
+            } else {
+                $('#confirm-password-warning').hide();
+            }
+        });
+    });
+</script>

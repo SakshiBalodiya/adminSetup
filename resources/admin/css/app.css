@@ -3453,7 +3453,6 @@ input::placeholder {
     border-bottom-right-radius: 0.25em;
 }
 
-
 .fc-day-alternate {
     background-color: lightblue;
 }
@@ -3488,4 +3487,20 @@ input::placeholder {
     margin: 0px;
     padding: 0px;
     text-align: center;
+}
+/* .modal{
+    display: flex !important;
+    align-items: center;
+}
+.modal-dialog{
+    width: 100%;
+} */
+.modal {
+    --bs-modal-margin: 22.75rem !important;
+    --bs-modal-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+#profile_card {
+    width: 55%;
+    margin: 0 auto;
+    margin-top: 158px;
 }
