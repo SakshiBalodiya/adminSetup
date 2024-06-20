@@ -6,6 +6,7 @@ use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,10 @@ Route::get('profile', [ProfileController::class, 'index']);
 Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::get('calender', [CalenderController::class, 'admin_index']);
+Route::post('calender/store', [CalenderController::class, 'admin_store'])->name('calender.store');
 
 Route::get('report', [ReportController::class, 'admin_index']);
 
+Route::get('settings', [SettingsController::class, 'admin_index']);
+Route::post('settings/update', [SettingsController::class, 'admin_update'])->name('settings.update');
 Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');

@@ -11,7 +11,7 @@
 
                         </div>
                         <form method="post" action="{{ route('profile.update') }}" class="row g-3">
-                            @csrf
+                        	{{ csrf_field() }}  
                             <div class="col-12  my-3">
                                 <label for="input25" class="form-label">Full Name</label>
                                 <div class="input-group">
@@ -36,12 +36,11 @@
                                         value="{{ $users->email }}" id="email" placeholder="Email">
                                 </div>
                             </div>
-
+ 
                             <div class="col-md-12">
                                 <div class="d-md-flex justify-content-end">
                                     <input type="text" name="id" value="{{ $users->id }}" hidden />
-                                    <button type="submit" value="" class="btn btn-primary px-4">Save
-                                        Changes</button>
+                                    <button type="submit" value="" class="btn btn-primary px-4">Save Changes</button>
                                 </div>
                             </div>
                         </form>

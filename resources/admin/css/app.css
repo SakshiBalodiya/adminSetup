@@ -3504,3 +3504,7 @@ input::placeholder {
     margin: 0 auto;
     margin-top: 158px;
 }
+.justify-center{
+    display: flex;
+    justify-content: center;
+}

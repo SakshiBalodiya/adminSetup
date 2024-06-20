@@ -24,26 +24,35 @@
                 </div>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="dateModalLabel">Selected Date</h5>
-                            {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <form method="POST" action="{{ route('calender.store') }}" id="holiday">
+                @csrf
+                <input type="hidden" name="selected_date" id="selectedDateInput">
+                <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="dateModalLabel">Selected Date</h5>
+                                {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button> --}}
-                        </div>
-                        <div class="modal-body">
-                            You selected <span id="modalDate"></span>. Mark this date as a holiday?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="confirmHolidayButton">Ok</button>
+                            </div>
+                            <div class="modal-body">
+                                You selected <span id="modalDate"></span>. Mark this date as a holiday?
+                            </div>
+                            <div class="row justify-center">
+                                <div class="col-6 mb-3">
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="confirmHolidayButton">Ok</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
                 aria-labelledby="dayModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -92,12 +101,12 @@
 <script src="{{ asset('admin/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        var holidays = @json($holidays);
         var selectedDateElement;
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             customButtons: {
                 add_saturday: {
-
                     click: function() {
                         var checkboxnew = document.getElementById('saturdayCheckboxnew');
                         if (checkboxnew) {
@@ -111,7 +120,6 @@
                     }
                 },
                 add_sunday: {
-
                     click: function() {
                         var checkboxnew = document.getElementById('sundayCheckboxnew');
 
@@ -126,7 +134,6 @@
                     }
                 },
                 add_alternate: {
-
                     click: function() {
                         var checkboxnew = document.getElementById('alternateCheckboxnew');
 
@@ -150,29 +157,41 @@
             },
             initialView: 'dayGridMonth',
             datesSet: function() {
-
                 addCheckboxes();
             },
             showNonCurrentDates: false,
             initialDate: new Date(),
-            // navLinks: true, // can click day/week names to navigate views
-            // selectable: true,
             nowIndicator: true,
             dayMaxEvents: true,
-            editable: true,
-            // selectable: true,
-            // businessHours: true,
+            editable: false,
             button: true,
             dayMaxEvents: true,
+        
+            events: holidays.map(function(holiday) {
+                return {
+                    title: holiday.name,
+                    start: holiday.date
+                };
+            }),
 
-            events: [],
+            // Toggle
             dayCellContent: function(arg) {
 
                 var switchInput = document.createElement('input');
                 switchInput.setAttribute('type', 'checkbox');
                 switchInput.id = 'test';
                 switchInput.classList.add('form-check-input');
-
+                var formattedDate = arg.date.toLocaleString("fr-CA").slice(0, 10);
+                console.log(holidays)
+                // console.log(newholiday,'newholiday');
+                // console.log(formattedDate,'formattedDatenew')
+                if (holidays.some(h => h.date === formattedDate)) {
+                    switchInput.checked = true;
+                    setTimeout(function() {
+                        var tdElement = switchInput.closest('.fc-daygrid-day');
+                        tdElement.classList.add('selected-date');
+                    }, 0);
+                }
                 switchInput.addEventListener('change', function() {
                     var tdElement = switchInput.closest('.fc-daygrid-day', );
                     if (this.checked) {
@@ -185,24 +204,24 @@
                         // Store the selected date element
                         console.log(selectedDateElement, 'selectedDateElement');
                         $('#dateModal').modal('show');
+
                     } else {
                         if (tdElement) {
                             tdElement.classList.remove('selected-date');
                         }
                     }
                 });
-
-
                 var label = document.createElement('label');
                 label.classList.add(
                     'form-check-label');
                 label.textContent = arg.dayNumberText;
 
+
+
                 var container = document.createElement('div');
-                container.classList.add(
-                    'form-check', 'form-switch');
-                container.appendChild(
-                    switchInput);
+                container.classList.add('form-check', 'form-switch');
+                container.appendChild(switchInput);
+
                 container.appendChild(label);
 
                 return {
@@ -213,19 +232,34 @@
 
         calendar.render();
 
+        // Holiday modal
         document.getElementById('confirmHolidayButton').addEventListener('click', function() {
+
             console.log('Ok button clicked');
             console.log('selectedDateElement:', selectedDateElement);
 
+
+
             if (selectedDateElement) {
+                let selectedDate = selectedDateElement.getAttribute('data-date');
+
+                console.log('Selected date:', selectedDate);
+
+
+
                 console.log('Adding holiday class');
+
+                document.getElementById('selectedDateInput').value = selectedDate;
                 selectedDateElement.classList.add('selected-date');
                 $('#dateModal').modal('hide');
+
             } else {
                 console.error('selectedDateElement is not defined');
             }
+
         });
 
+        // Custom button selected
         function toggleDayClass(dayClass, customClass, alternate = false) {
             var days = document.querySelectorAll('.' + dayClass);
 
@@ -256,7 +290,7 @@
                             if (day.classList.contains('saturday')) {
                                 day.classList.add('fc-day-alternate-saturday');
                             }
-                            
+
                             var checkbox = day.querySelector('.form-check-input');
                             if (checkbox) {
                                 checkbox.checked = true;
@@ -304,7 +338,7 @@
 
         }
 
-
+        // Adding checkbox on custom button
         function addCheckboxes() {
 
             var saturdayButton = document.querySelector('.fc-add_saturday-button');
@@ -342,6 +376,7 @@
             }
         }
 
+        // Remove custom button dates
         function removeDayClass(dayClass, toggleClass) {
 
             var modalDate = document.getElementById('modalDayRemove');
