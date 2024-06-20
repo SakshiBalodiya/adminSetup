@@ -24,10 +24,11 @@ class StaffController extends Controller
 
     public function admin_store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|unique:users',
-            'email' => 'required|unique:users',
-        ]);
+        // $request->validate([
+        //     'username' => 'required|unique:users',
+        //     'email' => 'required|unique:users',
+        //     'name' => 're'
+        // ]);
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;
         $users->email = $request->email;

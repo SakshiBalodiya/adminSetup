@@ -24,25 +24,23 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="p-4 border rounded">
-                                <form class="row g-3 needs-validation" action="{{ route('addstaff.store') }}"
-                                    method="post" novalidate enctype="multipart/form-data">
+                                <form class="row g-3" action="{{ route('addstaff.store') }}"
+                                    method="post"  enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-md-6">
-                                        <label for="validationCustom01" class="form-label">First name<span>*</span></label>
+                                        <label class="form-label">First name<span>*</span></label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-user"></i></span>
-                                            <input type="text" name="firstname" class="form-control"
-                                                id="validationCustom01" value="" required>
-                                            <div class="valid-feedback">Looks good!</div>
+                                            <input type="text" name="firstname" class="form-control" aria-label="default input example" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="validationCustom02" class="form-label">Last name<span>*</span></label>
+                                        <label class="form-label">Last name<span>*</span></label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-user"></i></span>
                                             <input type="text" name="lastname" class="form-control"
-                                                id="validationCustom02" value="" required>
-                                            <div class="valid-feedback">Looks good!</div>
+                                                value="" required>
+                                       
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -52,7 +50,7 @@
                                             <input type="text" name="username" class="form-control"
                                                 id="validationCustomUsername" aria-describedby="inputGroupPrepend"
                                                 required>
-                                            <div class="invalid-feedback">Please choose a username.</div>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         @if ($errors->has('username'))
                                         <div class="alert alert-danger">{{ $errors->first('username') }}</div>
@@ -66,7 +64,7 @@
                                             <input type="email" name="email" class="form-control"
                                                 id="validationCustomUsername" aria-describedby="inputGroupPrepend"
                                                 required>
-                                            <div class="invalid-feedback">Please choose a username.</div>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         @if ($errors->has('email'))
                                             <div class="alert alert-danger">{{ $errors->first('email') }}</div>
