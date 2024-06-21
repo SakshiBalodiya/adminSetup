@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Staff;
+
 
 use App\Models\Staff;
 use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StaffController extends Controller
 {
@@ -29,6 +30,36 @@ class StaffController extends Controller
 
     public function admin_store(Request $request)
     {
+        
+
+         $file = $request->file('filename');
+        $image = base64_encode(file_get_contents($file));
+      
+
+    
+    $binaryData = base64_decode($image);
+
+
+
+    $floatArray = [];
+    $dataLength = strlen($binaryData);
+
+    
+    $floatSize = 4;
+
+    for ($i = 0; $i < $dataLength; $i += $floatSize) {
+       
+        $bytes = substr($binaryData, $i, $floatSize);
+
+        $floatArray[] = unpack('f', $bytes)[1];
+    }
+
+    print_r($floatArray);
+    die;
+
+// Print the resulting float32 array
+
+      
         $users = new User;
         $users->name = $request->name;
         $users->email = $request->email;
@@ -40,11 +71,8 @@ class StaffController extends Controller
 
         $staff = new Staff;
         $staff->userId = $users->id;
-        $staff->descriptor = 'xyz';
-
-        $file = $request->file('image');
-        $staff->image = base64_encode(file_get_contents($file));
-    
+        $staff->descriptor = $floatArray;
+        $staff->image=$image;
         
         $staff->save();
         return redirect('staff');

@@ -2,7 +2,7 @@ window._ = require('lodash');
 
 try {
     require('bootstrap');
-} catch (e) {}
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -13,6 +13,36 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import * as faceapi from 'face-api.js';
+import { tinyFaceDetector, detectAllFaces, FaceMatcher, detectSingleFace, createCanvasFromMedia, TinyFaceDetectorOptions, nets, bufferToImage, ssdMobilenetv1, loadTinyFaceDetectorModel, loadSsdMobilenetv1Model, loadTinyYolov2Model, loadAgeGenderModel, loadFaceRecognitionModel, loadFaceDetectionModel, loadFaceExpressionModel, loadFaceLandmarkModel, loadFaceLandmarkTinyModel, SsdMobilenetv1, resizeResults, draw, FaceLandmarks68, tf, fetchNetWeights, TinyFaceDetector, env, euclideanDistance, fetchImage } from 'face-api.js'
+
+
+//window.faceapi = require("faceapi");
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("inside DOMContentLoaded");
+
+    var url = "./models";
+    try {
+        console.log("faceapi", faceapi)
+
+        // Load the models
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(url);
+        await faceapi.nets.faceLandmark68Net.loadFromUri(url);
+        await faceapi.nets.faceRecognitionNet.loadFromUri(url);
+        await faceapi.nets.faceExpressionNet.loadFromUri(url);
+
+        console.log("models loaded");
+
+    } catch (error) {
+        console.error("Error loading models:", error);
+    }
+
+
+});
+export default faceapi;
+
+
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

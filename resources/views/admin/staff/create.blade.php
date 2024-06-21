@@ -1,4 +1,9 @@
 @include('layout.header')
+<head>
+    <!--  <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script> -->
+  <script src="{{ mix('js/app.js') }}" defer></script>
+</head>
+
 <div class="wrapper">
     <div class="page-wrapper">
         <div class="page-content">
@@ -24,10 +29,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="p-4 border rounded">
-
-
                                 <form class="row g-3 needs-validation" action="{{ route('addstaff.store') }}"
-                                    method="post" novalidate>
+                                    method="post" enctype="multipart/form-data" novalidate>
                                     @csrf
                                     <div class="col-md-6">
                                         <label for="validationCustom01" class="form-label">First name</label>
@@ -78,8 +81,9 @@
 
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Image</label>
-                                        <input id="image-uploadify" type="file" name="image" aria-label="default input example"
-                                        accept=".jpg,.jpeg,.png" multiple required>
+                                        <input  type="file"  id="imageUpload" name="filename" aria-label="default input example"
+                                         required>
+                                           <img id="uploadedImage" style="display: none;">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password</label>
@@ -98,7 +102,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 btn-align">
-                                        <button class="btn btn-primary" type="submit">Add Staff</button>
+                                        <button  class="btn btn-primary" type="submit">Add Staff</button>
                                     </div>
                                 </form>
                             </div>
@@ -109,8 +113,48 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('input[type="file"]').imageuploadify();
-    })
-</script>
+
+   
+  
+   
+
+    <script>
+       
+     document.getElementById('imageUpload').addEventListener('change', handleImage);
+
+        async function handleImage(event) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const image = document.getElementById('uploadedImage');
+                    image.src = e.target.result;
+                    image.style.display = 'block';
+
+                    // Ensure the image has loaded before running face detection
+                    image.onload = async () => {
+                        await detectFaces(image);
+                    };
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function detectFaces(image) {
+            try {
+                // Use faceapi imported from app.js
+                const detections = await faceapi.detectAllFaces(image)
+                    .withFaceLandmarks()
+                    .withFaceDescriptors();
+                console.log(detections[0].descriptor);
+                let descriptor=detections[0].descriptor;
+            } catch (error) {
+                console.error('Error during face detection:', error);
+            }
+        }
+
+    
+
+
+
+    </script>
