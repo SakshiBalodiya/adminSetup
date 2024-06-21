@@ -28,7 +28,7 @@
                 @csrf
                 <input type="hidden" name="selected_date" id="selectedDateInput">
                 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel"
-                    aria-hidden="true">
+                    aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="row justify-center">
                                 <div class="col-6 mb-3">
-                                    <input type="text" class="form-control" name="name" required>
+                                    <input type="text" class="form-control" name="events" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -169,7 +169,7 @@
         
             events: holidays.map(function(holiday) {
                 return {
-                    title: holiday.name,
+                    title: holiday.events,
                     start: holiday.date
                 };
             }),
@@ -237,9 +237,7 @@
 
             console.log('Ok button clicked');
             console.log('selectedDateElement:', selectedDateElement);
-
-
-
+ 
             if (selectedDateElement) {
                 let selectedDate = selectedDateElement.getAttribute('data-date');
 
