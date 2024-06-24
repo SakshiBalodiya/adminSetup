@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Staff;
+
 
 use App\Models\User;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StaffController extends Controller
 {
@@ -24,11 +25,18 @@ class StaffController extends Controller
 
     public function admin_store(Request $request)
     {
-        // $request->validate([
-        //     'username' => 'required|unique:users',
-        //     'email' => 'required|unique:users',
-        //     'name' => 're'
-        // ]);
+
+
+       
+    
+         $file = $request->file('filename');
+        $image = base64_encode(file_get_contents($file));
+        $descriptor=$request->descriptor;
+     
+
+       
+        
+
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;
         $users->email = $request->email;
@@ -40,9 +48,12 @@ class StaffController extends Controller
 
         $staff = new Staff;
         $staff->userId = $users->id;
-        $staff->descriptor = 'xyz';
-        $file = $request->file('image');
-        $staff->image = "data:image/png;base64," . base64_encode(file_get_contents($file));
+
+        $staff->descriptor = $descriptor;
+        $staff->image=$image;
+        
+
+     
         $staff->save();
 
         return redirect('staff');

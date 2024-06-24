@@ -8,6 +8,24 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+
+import * as faceapi from 'face-api.js';
+
+async function loadModels() {
+    const modelPath = '/models';
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(modelPath);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(modelPath);
+    await faceapi.nets.faceExpressionNet.loadFromUri(modelPath);
+}
+
+window.faceapi = faceapi;
+window.loadFaceApiModels = loadModels;
+
+// Automatically load models when the app loads
+document.addEventListener('DOMContentLoaded', loadModels);
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
