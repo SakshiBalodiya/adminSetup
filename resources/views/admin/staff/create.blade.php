@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                   <!--  <div class="col-md-6">
 
                                         <label for="validationCustomUsername" class="form-label">Image</label>
                                         <input  type="file"  id="imageUpload" name="filename" aria-label="default input example"
@@ -108,7 +108,7 @@
                                            <img id="uploadedImage" style="display: none;">
                                                <input type="hidden" id="descriptor" name="descriptor" >
                                         
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password</label>
 
@@ -136,9 +136,11 @@
 
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Image<span>*</span></label>
-                                        <input id="image-uploadify" type="file" name="image" class="form-control"
+                                        <input id="imageUpload" type="file" name="filename" class="form-control"
                                             id="inputGroupFile01" aria-label="default input example"
                                             accept=".jpg,.jpeg,.png" required>
+                                              <img id="uploadedImage" style="display: none;">
+                                               <input type="hidden" id="descriptor" name="descriptor" >
                                     </div>
 
                                     <div class="col-12 btn-align">
