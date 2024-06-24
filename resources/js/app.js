@@ -13,7 +13,7 @@ import * as faceapi from 'face-api.js';
 
 async function loadModels() {
     const modelPath = '/models';
-    await faceapi.nets.ssdMobilenetv1.loadFromUri();
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath);
     await faceapi.nets.faceLandmark68Net.loadFromUri(modelPath);
     await faceapi.nets.faceRecognitionNet.loadFromUri(modelPath);
     await faceapi.nets.faceExpressionNet.loadFromUri(modelPath);

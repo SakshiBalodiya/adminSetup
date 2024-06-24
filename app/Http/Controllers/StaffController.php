@@ -30,36 +30,16 @@ class StaffController extends Controller
 
     public function admin_store(Request $request)
     {
-        
 
+       
+    
          $file = $request->file('filename');
         $image = base64_encode(file_get_contents($file));
-      
+        $descriptor=$request->descriptor;
+     
 
-    
-    $binaryData = base64_decode($image);
-
-
-
-    $floatArray = [];
-    $dataLength = strlen($binaryData);
-
-    
-    $floatSize = 4;
-
-    for ($i = 0; $i < $dataLength; $i += $floatSize) {
        
-        $bytes = substr($binaryData, $i, $floatSize);
-
-        $floatArray[] = unpack('f', $bytes)[1];
-    }
-
-    print_r($floatArray);
-    die;
-
-// Print the resulting float32 array
-
-      
+        
         $users = new User;
         $users->name = $request->name;
         $users->email = $request->email;
@@ -71,7 +51,7 @@ class StaffController extends Controller
 
         $staff = new Staff;
         $staff->userId = $users->id;
-        $staff->descriptor = $floatArray;
+        $staff->descriptor = $descriptor;
         $staff->image=$image;
         
         $staff->save();
