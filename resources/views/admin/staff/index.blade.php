@@ -35,35 +35,71 @@
             <!--end breadcrumb-->
 
             <hr />
-          
-                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
-                    @foreach ($staff as $staff)
+
+            <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+                @foreach ($staff as $staff)
                     <div class="col">
                         <div class="card radius-15">
                             <div class="card-body text-center">
                                 <div class="p-4 border radius-15">
-                                    <img src="{{$staff->image}}" width="110"
-                                        height="110" class="rounded-circle shadow" alt="">
-                                    <h5 class="mb-0 mt-5">{{$staff->name}}</h5>
-                                    <p class="mb-0">{{$staff->username}}</p>
-                                    <p class="mb-0">{{$staff->mobileNo}}</p>
-                                    <p class="mb-3">{{$staff->email}}</p>
-                                 
+
+                                    <img src="{{ $staff->image }}" width="110" height="110"
+                                        class="rounded-circle shadow" alt="">
+                                    <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
+                                    <p class="mb-0">{{ $staff->username }}</p>
+                                    <p class="mb-0">{{ $staff->mobileNo }}</p>
+                                    <p class="mb-3">{{ $staff->email }}</p>
+
                                     <div class="row">
-                                        <div class="col-xl-6"><a href="{{ url('editstaff') }}"
-                                                class="btn btn-outline-primary radius-15" style="width : 100%;">Edit
+                                        <div class="col-xl-6"><a href="{{ url('staff/' . $staff->id . '/editstaff') }}"
+                                                class="btn btn-outline-primary radius-15" style="width : 100%;"><i
+                                                    class='bx bxs-edit'></i>
                                             </a></div>
-                                        <div class="col-xl-6"><a href="#"
-                                                class="btn btn-outline-primary radius-15" style="width : 100%;">Delete
-                                            </a></div>
+                                        <div class="col-xl-6">
+                                            <a type="button" data-delete-id ="{{ $staff->id }}"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                class="btn btn-outline-primary radius-15" style="width : 100%;"><i
+                                                    class='bx bxs-trash'></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                @endforeach
+                <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Item</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <b>Are you sure you want to delete this?</b>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                <a type="button" href="#" id="confirm-delete" class="btn btn-danger">Ok</a>
+                            </div>
+                        </div>
+                    </div> 
                 </div>
-          
+            </div>
+
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exampleModal = document.getElementById('exampleModal');
+        exampleModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const staffId = button.getAttribute('data-delete-id');
+            const confirmDeleteLink = document.getElementById('confirm-delete');
+
+            confirmDeleteLink.href = `staff/${staffId}/delete`;
+        });
+    });
+</script>
