@@ -24,57 +24,94 @@
                 </div>
             </div>
             <!-- Modal -->
-            <form method="POST" action="{{ route('calender.store') }}" id="holiday">
+            <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
                 @csrf
                 <input type="hidden" name="selected_date" id="selectedDateInput">
+                <input type="hidden" name="user_id" value="1">
+                <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+                    aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel"></h5>
+                                {{-- <button type="button" data-bs-dismiss="modal" aria-label="Close"> --}}
+                                <i class="lni lni-close" data-bs-dismiss="modal"></i>
+                                {{-- </button> --}}
+                            </div>
+
+                            <div class="row justify-center">
+                                <div class="col-10 mb-3 mt-3">
+                                    <input type="text" class="form-control custom_input" name="name" required
+                                        placeholder="Add title">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel"
                     aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="dateModalLabel">Selected Date</h5>
-                                {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button> --}}
+                                <h5 class="modal-title" id="dateModalLabel"><span id="modalDate"></span></h5>
+                                <i class="lni lni-close" data-bs-dismiss="modal"></i>
                             </div>
                             <div class="modal-body">
-                                You selected <span id="modalDate"></span>. Mark this date as a holiday?
+                                Mark this date as a holiday?
                             </div>
-                            <div class="row justify-center">
+                            {{-- <div class="row justify-center">
                                 <div class="col-6 mb-3">
-                                    <input type="text" class="form-control" name="events" required>
+                                    <input type="text" class="form-control" name="name" required>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" id="cancel_date">Close</button>
                                 <button type="submit" class="btn btn-primary" id="confirmHolidayButton">Ok</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </form>
-            <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
-                aria-labelledby="dayModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            {{-- <h5 class="modal-title" id="dayModalLabel">Selected Date</h5> --}}
-                            {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
+                @csrf
+                <input type="hidden" name="selected_date" id="holidaysInput">
+                <input type="hidden" name="user_id" value="1">
+                <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+                    aria-labelledby="dayModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                {{-- <h5 class="modal-title" id="dayModalLabel">Selected Date</h5> --}}
+                                {{-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button> --}}
-                        </div>
-                        <div class="modal-body">
-                            <span id="modalDay"></span>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="confirmButton">Ok</button>
+                            </div>
+                            <div class="modal-body">
+                                <span id="modalDay"></span>
+                            </div>
+                            <div class="row justify-center">
+                                <div class="col-6 mb-3">
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    id="cancel">Close</button>
+                                <button type="submit" class="btn btn-primary" id="confirmButton">Ok</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-                data-bs-backdrop="static" aria-hidden="true">
+            </form>
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -87,8 +124,29 @@
                             <span id="modalDayRemove"></span>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="cancel">Cancel</button>
                             <button type="button" class="btn btn-primary" id="confirmRemove">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="removeDate" tabindex="-1" role="dialog"
+                aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{-- <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> --}}
+                        </div>
+                        <div class="modal-body">
+                            <span id="modalDayRemove"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="confirmDelete">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -103,6 +161,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         var holidays = @json($holidays);
         var selectedDateElement;
+
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             customButtons: {
@@ -113,7 +172,9 @@
                             checkboxnew.checked = !checkboxnew.checked;
                         }
                         if (checkboxnew.checked) {
+
                             toggleDayClass('fc-day-sat', 'fc-day-saturday');
+
                         } else {
                             removeDayClass('fc-day-sat', 'fc-day-saturday');
                         }
@@ -128,6 +189,7 @@
                         }
                         if (checkboxnew.checked) {
                             toggleDayClass('fc-day-sun', 'fc-day-sunday');
+
                         } else {
                             removeDayClass('fc-day-sun', 'fc-day-sunday');
                         }
@@ -159,6 +221,7 @@
             datesSet: function() {
                 addCheckboxes();
             },
+
             showNonCurrentDates: false,
             initialDate: new Date(),
             nowIndicator: true,
@@ -166,13 +229,33 @@
             editable: false,
             button: true,
             dayMaxEvents: true,
-        
-            events: holidays.map(function(holiday) {
-                return {
-                    title: holiday.events,
-                    start: holiday.date
-                };
-            }),
+            events: [
+                @foreach ($holidays as $holiday)
+                    {
+                        title: '{{ $holiday->name }}',
+                        start: '{{ $holiday->holiday_date }}',
+
+                    },
+                @endforeach
+            ],
+            eventClick: function(info) {
+                info.el.addEventListener('dblclick', function() {
+                    $('#eventModal').modal("show");
+                });
+            },
+            dateClick: function(info) {
+                info.dayEl.addEventListener('dblclick', function() {
+                    $('#eventModal').modal('show');
+                });
+                // // Set the selected date in the modal's input field
+                // document.getElementById('eventDate').value = info.dateStr;
+            },
+            // events: holidays.map(function(holiday) {
+            //     return {
+            //         title: holiday.events,
+            //         start: holiday.date
+            //     };
+            // }),
 
             // Toggle
             dayCellContent: function(arg) {
@@ -182,19 +265,23 @@
                 switchInput.id = 'test';
                 switchInput.classList.add('form-check-input');
                 var formattedDate = arg.date.toLocaleString("fr-CA").slice(0, 10);
-                console.log(holidays)
+                console.log(holidays, 'holidays')
                 // console.log(newholiday,'newholiday');
                 // console.log(formattedDate,'formattedDatenew')
-                if (holidays.some(h => h.date === formattedDate)) {
+                if (holidays.some(h => h.holiday_date === formattedDate)) {
                     switchInput.checked = true;
                     setTimeout(function() {
                         var tdElement = switchInput.closest('.fc-daygrid-day');
                         tdElement.classList.add('selected-date');
                     }, 0);
                 }
+
                 switchInput.addEventListener('change', function() {
+                    $('#eventModal').modal('hide');
+
                     var tdElement = switchInput.closest('.fc-daygrid-day', );
                     if (this.checked) {
+                        $('#eventModal').modal('hide');
                         var formattedDate = arg.date.toLocaleString("en-IN").slice(0, 10);
                         console.log(formattedDate)
                         var selectedDate = formattedDate;
@@ -203,11 +290,14 @@
                         selectedDateElement = tdElement;
                         // Store the selected date element
                         console.log(selectedDateElement, 'selectedDateElement');
+
                         $('#dateModal').modal('show');
 
                     } else {
                         if (tdElement) {
-                            tdElement.classList.remove('selected-date');
+                            deleteClass('fc-day', 'selected-date');
+                            // tdElement.classList.remove('selected-date');
+
                         }
                     }
                 });
@@ -237,14 +327,13 @@
 
             console.log('Ok button clicked');
             console.log('selectedDateElement:', selectedDateElement);
- 
+
+
+
             if (selectedDateElement) {
                 let selectedDate = selectedDateElement.getAttribute('data-date');
 
                 console.log('Selected date:', selectedDate);
-
-
-
                 console.log('Adding holiday class');
 
                 document.getElementById('selectedDateInput').value = selectedDate;
@@ -257,8 +346,31 @@
 
         });
 
+        // function deleteClass(dayClass) {
+        //     document.getElementById('cancel_date').addEventListener('click', function() {
+
+        //         // console.log('Ok button clicked');
+        //         // console.log('selectedDateElement:', selectedDateElement);
+
+
+        //         var days = document.querySelectorAll('.' + dayClass);
+        //         var checkbox = day.querySelector('.form-check-input');
+        //         days.forEach(function(day) {
+        //             console.log(checkbox, ' checkbox')
+        //             if (checkbox) {
+        //                 checkbox.checked = false;
+        //                 $('#dateModal').modal('hide');
+        //             }
+        //         });
+               
+        //     });
+        // }
+
+
+
         // Custom button selected
         function toggleDayClass(dayClass, customClass, alternate = false) {
+            $('#eventModal').modal('hide');
             var days = document.querySelectorAll('.' + dayClass);
 
             var modalDateSpan = document.getElementById('modalDay');
@@ -274,7 +386,7 @@
             var newConfirmButton = confirmButton.cloneNode(true);
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             newConfirmButton.addEventListener('click', function() {
-
+                var selectedDates = [];
                 days.forEach((day, index) => {
 
                     if (alternate) {
@@ -293,7 +405,8 @@
                             if (checkbox) {
                                 checkbox.checked = true;
                             }
-                            var checkboxnew = document.getElementById('saturdayCheckboxnew');
+                            var checkboxnew = document.getElementById(
+                                'saturdayCheckboxnew');
                             if (checkboxnew) {
                                 checkboxnew.checked = false;
                             }
@@ -328,14 +441,49 @@
                         if (checkbox) {
                             checkbox.checked = true;
                         }
+
+                        document.querySelectorAll('.fc-day-sat').forEach(function(day) {
+                            var selectedDate = day.getAttribute('data-date');
+                            console.log(selectedDate, 'selectedDate1');
+                            if (selectedDate !== null && selectedDate !== '') {
+                                selectedDates.push(selectedDate);
+                            }
+                        });
+
+
+
+                        document.getElementById('holidaysInput').value = selectedDates;
+                        if (holidays) {
+                            day.classList.toggle(customClass);
+                        }
                     }
 
                 });
                 $('#dayModal').modal('hide');
+
             });
 
         }
 
+        // // Add event listener to the Ok button in the day modal
+        // document.getElementById('confirmButton').addEventListener('click', function() {
+        //     var selectedSaturdays = [];
+        //     console.log()
+        //     // Loop through all elements with the 'fc-day-sat' class
+        //     document.querySelectorAll('.fc-day-sat').forEach(function(day) {
+        //         // Get the data-date attribute value for each selected Saturday
+        //         var selectedDate = day.getAttribute('data-date');
+        //         console.log(selectedDate, 'selectedDate')
+        //         selectedSaturdays.push(selectedDate);
+        //     });
+
+        //     // Set the selected Saturday dates in the hidden input field
+        //     document.getElementById('selectedDateInput').value = selectedSaturdays.join(
+        //         ',');
+
+        //     // Submit the form
+        //     document.getElementById('holiday').submit();
+        // });
         // Adding checkbox on custom button
         function addCheckboxes() {
 
@@ -386,6 +534,32 @@
                 modalDate.textContent = 'Do you want to remove the alternate Saturday?';
             }
             $('#confirmModal').modal('show');
+            document.getElementById('confirmRemove').onclick = function() {
+                var days = document.querySelectorAll('.' + dayClass);
+                days.forEach(function(day) {
+                    day.classList.remove(toggleClass);
+                    var checkbox = day.querySelector('.form-check-input');
+
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+
+                });
+                $('#confirmModal').modal('hide');
+            }
+        }
+
+        function deleteClass(dayClass, toggleClass) {
+
+            // var modalDate = document.getElementById('modalDayRemove');
+            // if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
+            //     modalDate.textContent = 'Do you want to remove the selected Saturday?'
+            // } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
+            //     modalDate.textContent = '    Do you want to remove the selected Sunday?';
+            // } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
+            //     modalDate.textContent = 'Do you want to remove the alternate Saturday?';
+            // }
+            $('#removeDate').modal('show');
             document.getElementById('confirmRemove').onclick = function() {
                 var days = document.querySelectorAll('.' + dayClass);
                 days.forEach(function(day) {

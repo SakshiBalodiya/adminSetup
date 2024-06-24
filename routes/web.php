@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -44,8 +45,9 @@ Route::get('attendance', [AttendanceController::class, 'admin_index']);
 Route::get('profile', [ProfileController::class, 'index']);
 Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::get('calender', [CalenderController::class, 'admin_index']);
-Route::post('calender/store', [CalenderController::class, 'admin_store'])->name('calender.store');
+Route::get('calendar', [CalendarController::class, 'admin_index']);
+Route::post('calendar/store', [CalendarController::class, 'admin_store'])->name('calendar.store');
+Route::get('calendar/{id}/delete', [CalendarController::class, 'admin_destroy']);
 
 Route::get('report', [ReportController::class, 'admin_index']);
 

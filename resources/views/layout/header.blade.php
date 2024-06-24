@@ -529,13 +529,13 @@ function page_url()
                                 </a>
 
                             </li>
-                            <li <?php if (str_contains(page_url(), 'calender')) {
+                            <li <?php if (str_contains(page_url(), 'calendar')) {
                                 echo 'class="mm-active"';
                             } ?>>
-                                <a href="{{ url('calender') }}" class="nav-link">
+                                <a href="{{ url('calendar') }}" class="nav-link">
                                     <div class="parent-icon"><i class='bx bx-calendar-week'></i>
                                     </div>
-                                    <div class="menu-title">Calender</div>
+                                    <div class="menu-title">Calendar</div>
                                 </a>
 
                             </li>
