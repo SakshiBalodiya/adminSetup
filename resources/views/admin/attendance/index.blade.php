@@ -38,7 +38,7 @@
                                          @foreach($attendance as $attendances)
                                         <tr>
                                             <td>{{$attendances->name}}</td>
-                                            <td>{{$attendances->created_at}}</td>
+                                            <td>{{date('d-m-Y', strtotime($attendances->created_at))}}</td>
                                             <td>{{$attendances->time}}</td>
                                             <td>{{$attendances->status}}</td>
                                         </tr>
