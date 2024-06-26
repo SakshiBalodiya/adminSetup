@@ -35,24 +35,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                         @foreach($attendance as $attendances)
                                         <tr>
-                                            <td>Rohan</td>
-                                            <td>15-05-2024</td>
-                                            <td>10:00 AM</td>
-                                            <td>checkIn</td>
+                                            <td>{{$attendances->name}}</td>
+                                            <td>{{$attendances->created_at}}</td>
+                                            <td>{{$attendances->time}}</td>
+                                            <td>{{$attendances->status}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Pauline I. Bird</td>
-                                            <td>15-05-2024</td>
-                                            <td>6:00 PM</td>
-                                            <td>checkout</td>
-                                        </tr>
-                                        <tr>
-                                            <td>John B. Roman</td>
-                                            <td>15-05-2024</td>
-                                            <td>10:00 AM</td>
-                                            <td>checkIn</td>
-                                        </tr>
+                                          @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\attendance;
 use App\Http\Requests\StoreattendanceRequest;
 use App\Http\Requests\UpdateattendanceRequest;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -15,7 +16,18 @@ class AttendanceController extends Controller
      */
     public function admin_index()
     {
-        return view('admin.attendance.index');
+
+                $attendance=DB::table('attendances as AT')
+                 ->leftJoin('staff as S','S.id','AT.staff_id')
+                 ->leftJoin('users as U','U.id','S.userId')
+                 ->select('U.name','U.userName','U.role','AT.time','AT.status','AT.created_at','AT.updated_at','U.id')
+                
+                 ->get();
+
+
+
+
+        return view('admin.attendance.index',compact('attendance'));
     }
 
     /**
