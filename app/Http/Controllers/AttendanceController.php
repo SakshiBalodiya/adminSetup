@@ -18,7 +18,7 @@ class AttendanceController extends Controller
     {
 
                 $attendance=DB::table('attendances as AT')
-                 ->leftJoin('staff as S','S.id','AT.staff_id')
+                 ->leftJoin('staff as S','S.id','AT.userId')
                  ->leftJoin('users as U','U.id','S.userId')
                  ->select('U.name','U.userName','U.role','AT.date_time','AT.status','AT.created_at','AT.updated_at','U.id')
                 
