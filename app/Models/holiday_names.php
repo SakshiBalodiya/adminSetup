@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class holiday_names extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'holiday_id',
+        'name',
+    ];
 }

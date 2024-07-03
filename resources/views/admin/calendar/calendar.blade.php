@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-
+            {{-- Add Event  --}}
             <form method="POST" action="{{ route('calendar.store') }}" id="holidayEvent">
                 @csrf
                 <input type="hidden" name="selected_date" id="selectedDateEvent">
@@ -34,11 +34,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="eventModalLabel"></h5>
-
                                 <i class="lni lni-close" data-bs-dismiss="modal"></i>
-
                             </div>
-
                             <div class="row justify-center">
                                 <div class="col-10 mb-3 mt-3">
                                     <input type="text" class="form-control custom_input" name="name" required
@@ -53,6 +50,9 @@
                     </div>
                 </div>
             </form>
+
+
+            {{-- Apply holiday on date --}}
             <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
                 @csrf
                 <input type="hidden" name="selected_date" id="selectedDateInput">
@@ -76,6 +76,7 @@
                     </div>
                 </div>
             </form>
+            {{-- Apply holiday on weekend --}}
             <form method="POST" action="{{ route('calendar.store') }}" id="weekendHolidays">
                 @csrf
                 <input type="hidden" name="selected_date" id="weekendInput">
@@ -89,12 +90,6 @@
                             <div class="modal-body">
                                 <span id="modalDay"></span>
                             </div>
-                            {{-- <div class="row justify-center">
-                                <div class="col-6 mb-3">
-                                  
-                                    <input type="text" class="form-control" name="name" required>
-                                </div>
-                            </div> --}}
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     id="cancel">Close</button>
@@ -104,9 +99,8 @@
                     </div>
                 </div>
             </form>
-
-
-            {{-- <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
+            {{-- Remove all weekend --}}
+            <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
                 @csrf
                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
                     aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
@@ -125,24 +119,23 @@
                         </div>
                     </div>
                 </div>
-            </form> --}}
+            </form>
 
-            {{-- Remove all days --}}
-            <div class="modal fade" id="removeDate" tabindex="-1" role="dialog"
+            {{-- Delete date --}}
+
+            <div class="modal fade" id="deleteInput" tabindex="-1" role="dialog"
                 aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            {{-- <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> --}}
+                            <h3>Remove Date</h3>
                         </div>
                         <div class="modal-body">
-                            <span id="modalDayRemove"></span>
+                            <span id="modalDayRemove">Are you sure you want to delete this date?</span>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="cancel">Cancel</button>
                             <button type="button" class="btn btn-primary" id="confirmDelete">Remove</button>
                         </div>
                     </div>
@@ -151,14 +144,12 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('admin/plugins/fullcalendar/js/main.min.js') }}"></script>
-<script src="{{ asset('admin/plugins/metismenu/js/metisMenu.min.js') }}"></script>
-<script src="{{ asset('admin/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var holidays = @json($holidays);
         var selectedDateElement;
-
+        var selectedDateId = null;
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             customButtons: {
@@ -169,9 +160,7 @@
                             checkboxnew.checked = !checkboxnew.checked;
                         }
                         if (checkboxnew.checked) {
-
                             toggleDayClass('fc-day-sat', 'fc-day-saturday');
-
                         } else {
                             removeDayClass('fc-day-sat', 'fc-day-saturday');
                         }
@@ -180,7 +169,6 @@
                 add_sunday: {
                     click: function() {
                         var checkboxnew = document.getElementById('sundayCheckboxnew');
-
                         if (checkboxnew) {
                             checkboxnew.checked = !checkboxnew.checked;
                         }
@@ -237,11 +225,6 @@
                     @endif
                 @endforeach
             ],
-            // eventClick: function(info) {
-            //     info.el.addEventListener('dblclick', function() {
-            //         $('#eventModal').modal("show");
-            //     });
-            // },
             dateClick: function(info) {
                 var clickedDate = info.dateStr;
                 info.dayEl.addEventListener('dblclick', function() {
@@ -264,12 +247,14 @@
                 switchInput.classList.add('form-check-input');
                 var formattedDate = arg.date.toLocaleString("fr-CA").slice(0, 10);
                 console.log(holidays, 'holidays')
-
-                if (holidays.some(h => h.holiday_date === formattedDate)) {
+                var holiday = holidays.find(h => h.holiday_date === formattedDate);
+                if (holiday) {
                     switchInput.checked = true;
+
                     setTimeout(function() {
                         var tdElement = switchInput.closest('.fc-daygrid-day');
                         tdElement.classList.add('selected-date');
+                        tdElement.dataset.holidayId = holiday.id;
                     }, 0);
                 }
 
@@ -291,8 +276,14 @@
                         $('#dateModal').modal('show');
 
                     } else {
+                        // $('#deleteInput').modal('show');
                         if (tdElement) {
-                            deleteClass('fc-day', 'selected-date');
+
+                            selectedDateElement = tdElement;
+                            selectedDateId = selectedDateElement.getAttribute(
+                                'data-holiday-id');
+
+                            $('#deleteInput').modal('show');
                         }
                     }
                 });
@@ -328,9 +319,9 @@
                 $('#dateModal').modal('hide');
                 document.getElementById('holiday').submit(); // Submit the date form
             } else {
-                // If no date is selected, submit the event form
+                // If no date is selected
                 console.log('No date selected, submitting event form');
-                // document.getElementById('holidayEvent').submit(); // Submit the event form
+
             }
         });
 
@@ -360,30 +351,6 @@
                 console.error('No selected date element found');
             }
         });
-
-
-
-        // function deleteClass(dayClass) {
-        //     document.getElementById('cancel_date').addEventListener('click', function() {
-
-        //         // console.log('Ok button clicked');
-        //         // console.log('selectedDateElement:', selectedDateElement);
-
-
-        //         var days = document.querySelectorAll('.' + dayClass);
-        //         var checkbox = day.querySelector('.form-check-input');
-        //         days.forEach(function(day) {
-        //             console.log(checkbox, ' checkbox')
-        //             if (checkbox) {
-        //                 checkbox.checked = false;
-        //                 $('#dateModal').modal('hide');
-        //             }
-        //         });
-
-        //     });
-        // }
-
-
 
         // Custom button selected
         function toggleDayClass(dayClass, customClass, alternate = false) {
@@ -447,10 +414,6 @@
                                 day.classList.add('fc-day-saturday');
 
                             }
-                            // var checkboxnew = document.getElementById('alternateCheckboxnew');
-                            // if (checkboxnew) {
-                            //     checkboxnew.checked = false;
-                            // }
                         }
                         // Toggle the checkbox
 
@@ -473,57 +436,31 @@
                             document.getElementById('weekendInput').value = selectedDates;
                             var checkboxnew = document.getElementById(
                                 'saturdayCheckboxnew');
+
                             if (checkboxnew) {
-                                checkboxnew.checked = true;
+                                checkboxnew.checked = !checkboxnew.checked;
+                                console.log(checkboxnew);
+
                             }
+
+                        }
+                        var checkboxnew = document.getElementById(
+                            'saturdayCheckboxnew');
+                        console.log(checkboxnew);
+                        if (checkboxnew) {
+                            checkboxnew.checked = !checkboxnew.checked;
+
                         }
                     }
-                    // document.querySelectorAll('.fc-day-sat').forEach(function(day) {
-                    //     var selectedDate = day.getAttribute('data-date');
-                    //     console.log(selectedDate, 'selectedDate1');
-                    //     if (selectedDate !== null && selectedDate !== '') {
-                    //         selectedDates.push(selectedDate);
-                    //     }
-                    // });
-
-
-
-                    // document.getElementById('holidaysInput').value = selectedDates;
-
-
                 });
-
-
                 $('#dayModal').modal('hide');
-
-
             });
-
         }
 
 
-        // // Add event listener to the Ok button in the day modal
-        // document.getElementById('confirmButton').addEventListener('click', function() {
-        //     var selectedSaturdays = [];
-        //     console.log()
-        //     // Loop through all elements with the 'fc-day-sat' class
-        //     document.querySelectorAll('.fc-day-sat').forEach(function(day) {
-        //         // Get the data-date attribute value for each selected Saturday
-        //         var selectedDate = day.getAttribute('data-date');
-        //         console.log(selectedDate, 'selectedDate')
-        //         selectedSaturdays.push(selectedDate);
-        //     });
 
-        //     // Set the selected Saturday dates in the hidden input field
-        //     document.getElementById('selectedDateInput').value = selectedSaturdays.join(
-        //         ',');
-
-        //     // Submit the form
-        //     document.getElementById('holiday').submit();
-        // });
         // Adding checkbox on custom button
         function addCheckboxes() {
-
             var saturdayButton = document.querySelector('.fc-add_saturday-button');
             if (saturdayButton && !saturdayButton.querySelector('input')) {
                 var saturdayCheckboxnew = document.createElement('input');
@@ -532,8 +469,6 @@
                 saturdayButton.innerHTML = '';
                 saturdayButton.appendChild(saturdayCheckboxnew);
                 saturdayButton.appendChild(document.createTextNode(' Saturday'));
-
-
             }
 
 
@@ -559,14 +494,14 @@
             }
         }
 
-        // Remove custom button dates
+        /*  // Remove all weekend dates */
         function removeDayClass(dayClass, toggleClass) {
 
             var modalDate = document.getElementById('modalDayRemove');
             if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
                 modalDate.textContent = 'Do you want to remove the selected Saturday?'
             } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
-                modalDate.textContent = '    Do you want to remove the selected Sunday?';
+                modalDate.textContent = 'Do you want to remove the selected Sunday?';
             } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
                 modalDate.textContent = 'Do you want to remove the alternate Saturday?';
             }
@@ -586,31 +521,41 @@
             }
         }
 
-        function deleteClass(dayClass, toggleClass) {
 
-            // var modalDate = document.getElementById('modalDayRemove');
-            // if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
-            //     modalDate.textContent = 'Do you want to remove the selected Saturday?'
-            // } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
-            //     modalDate.textContent = '    Do you want to remove the selected Sunday?';
-            // } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
-            //     modalDate.textContent = 'Do you want to remove the alternate Saturday?';
-            // }
-            $('#removeDate').modal('show');
-            document.getElementById('confirmRemove').onclick = function() {
-                var days = document.querySelectorAll('.' + dayClass);
-                days.forEach(function(day) {
-                    day.classList.remove(toggleClass);
-                    var checkbox = day.querySelector('.form-check-input');
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            console.log(selectedDateId);
+            if (selectedDateId) {
+                fetch(`calendar/${selectedDateId}/delete`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            $('#deleteInput').modal('hide');
+                            selectedDateElement.classList.remove('selected-date');
+                            console.log('Date removed successfully');
+                        } else {
+                            console.error('Failed to remove date');
+                            alert('Failed to remove date. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(
+                            `An error occurred while removing the date: ${error.message}. Please try again.`
+                        );
+                    });
 
-                    if (checkbox) {
-                        checkbox.checked = false;
-                    }
-
-                });
-                $('#confirmModal').modal('hide');
             }
-        }
+        });
 
     });
 </script>
