@@ -104,7 +104,9 @@
                                             value="{{ $staff->image }}" id="inputGroupFile01"
                                             accept=".jpg,.jpeg,.png">
                                         <p> <img src="{{ $staff->image }}" width="110" height="110"
-                                                class="rounded-circle shadow" alt=""></p>
+                                                class="rounded-circle shadow" alt="">
+                                                <input type="hidden" id="descriptor" name="descriptor" >
+                                            </p>
                                     </div>
                                     <div class="col-12 btn-align">
                                         <input type="text" value="{{ $staff->id }}" name="id" hidden>

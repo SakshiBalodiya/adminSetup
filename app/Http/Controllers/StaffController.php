@@ -30,7 +30,7 @@ class StaffController extends Controller
 
        
     
-         $file = $request->file('filename');
+        $file = $request->file('filename');
         $image = base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
      
@@ -66,6 +66,7 @@ class StaffController extends Controller
             ->select(
                 'staff.id',
                 'staff.image',
+                'staff.descriptor',
                 'staff.created_at',
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', 1) as firstname"),
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', -1) as lastname"),
@@ -93,7 +94,7 @@ class StaffController extends Controller
 
 
 
-        $staff->descriptor = 'xyz';
+        $staff->descriptor = $request->descriptor;
 
         if (!empty($request->image)) {
   
