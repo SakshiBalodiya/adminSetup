@@ -100,26 +100,26 @@
                 </div>
             </form>
             {{-- Remove all weekend --}}
-            <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
-                @csrf
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                    aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            </div>
-                            <div class="modal-body">
-                                <span id="modalDayRemove"></span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                    id="cancel">Cancel</button>
-                                <button type="button" class="btn btn-primary" id="confirmRemove">Remove</button>
-                            </div>
+            {{-- <form method="POST" action="{{ route('calendar.store') }}" id="holiday">
+                @csrf --}}
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                aria-labelledby="confirmModalLabel" data-bs-backdrop="static" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                            <span id="modalDayRemove">Are you sure you want to delete all saturday date?</span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="confirmRemove">Remove</button>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+            {{-- </form> --}}
 
             {{-- Delete date --}}
 
@@ -150,6 +150,8 @@
         var holidays = @json($holidays);
         var selectedDateElement;
         var selectedDateId = null;
+        var selectedDateIds = [];
+        var selectedDateElements = [];
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             customButtons: {
@@ -162,7 +164,24 @@
                         if (checkboxnew.checked) {
                             toggleDayClass('fc-day-sat', 'fc-day-saturday');
                         } else {
+
+                            $('#confirmModal').modal('show');
+                            // Show the confirmation modal
                             removeDayClass('fc-day-sat', 'fc-day-saturday');
+                            selectedDateIds = [];
+                            selectedDateElements = [];
+                            // Check if there are any elements with both 'fc-day-sat' and 'selected-date' classes
+                            var tdElements = document.querySelectorAll(
+                                'td.fc-day-sat.selected-date');
+                            tdElements.forEach(function(tdElement) {
+                                var selectedDateId = tdElement.getAttribute(
+                                    'data-holiday-id');
+                                selectedDateIds.push(selectedDateId);
+                                selectedDateElements.push(
+                                    tdElement); // Store the element for later use
+                            });
+                            console.log(selectedDateIds, 'selectedDateIds');
+                            console.log(selectedDateElements, 'selectedDateElements');
                         }
                     }
                 },
@@ -176,7 +195,22 @@
                             toggleDayClass('fc-day-sun', 'fc-day-sunday');
 
                         } else {
-                            removeDayClass('fc-day-sun', 'fc-day-sunday');
+                            // Show the confirmation modal
+                            $('#confirmModal').modal('show');
+                            selectedDateIds = [];
+                            selectedDateElements = [];
+                            // Check if there are any elements with both 'fc-day-sat' and 'selected-date' classes
+                            var tdElements = document.querySelectorAll(
+                                'td.fc-day-sun.selected-date');
+                            tdElements.forEach(function(tdElement) {
+                                var selectedDateId = tdElement.getAttribute(
+                                    'data-holiday-id');
+                                selectedDateIds.push(selectedDateId);
+                                selectedDateElements.push(
+                                    tdElement); // Store the element for later use
+                            });
+                            console.log(selectedDateIds, 'selectedDateIds');
+                            console.log(selectedDateElements, 'selectedDateElements');
                         }
                     }
                 },
@@ -261,7 +295,7 @@
                 switchInput.addEventListener('change', function() {
                     $('#eventModal').modal('hide');
 
-                    var tdElement = switchInput.closest('.fc-daygrid-day', );
+                    var tdElement = switchInput.closest('.fc-daygrid-day');
                     if (this.checked) {
                         $('#eventModal').modal('hide');
                         var formattedDate = arg.date.toLocaleString("en-IN").slice(0, 10);
@@ -355,6 +389,7 @@
         // Custom button selected
         function toggleDayClass(dayClass, customClass, alternate = false) {
             $('#eventModal').modal('hide');
+
             var days = document.querySelectorAll('.' + dayClass);
 
             var modalDateSpan = document.getElementById('modalDay');
@@ -371,6 +406,7 @@
             confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
             newConfirmButton.addEventListener('click', function() {
                 var selectedDates = [];
+
                 days.forEach((day, index) => {
 
                     if (alternate) {
@@ -434,25 +470,11 @@
                         if (selectedDate !== null && selectedDate !== '') {
                             selectedDates.push(selectedDate);
                             document.getElementById('weekendInput').value = selectedDates;
-                            var checkboxnew = document.getElementById(
-                                'saturdayCheckboxnew');
-
-                            if (checkboxnew) {
-                                checkboxnew.checked = !checkboxnew.checked;
-                                console.log(checkboxnew);
-
-                            }
-
-                        }
-                        var checkboxnew = document.getElementById(
-                            'saturdayCheckboxnew');
-                        console.log(checkboxnew);
-                        if (checkboxnew) {
-                            checkboxnew.checked = !checkboxnew.checked;
-
                         }
                     }
+
                 });
+
                 $('#dayModal').modal('hide');
             });
         }
@@ -469,6 +491,7 @@
                 saturdayButton.innerHTML = '';
                 saturdayButton.appendChild(saturdayCheckboxnew);
                 saturdayButton.appendChild(document.createTextNode(' Saturday'));
+
             }
 
 
@@ -495,31 +518,31 @@
         }
 
         /*  // Remove all weekend dates */
-        function removeDayClass(dayClass, toggleClass) {
+        // function removeDayClass(dayClass, toggleClass) {
 
-            var modalDate = document.getElementById('modalDayRemove');
-            if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
-                modalDate.textContent = 'Do you want to remove the selected Saturday?'
-            } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
-                modalDate.textContent = 'Do you want to remove the selected Sunday?';
-            } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
-                modalDate.textContent = 'Do you want to remove the alternate Saturday?';
-            }
-            $('#confirmModal').modal('show');
-            document.getElementById('confirmRemove').onclick = function() {
-                var days = document.querySelectorAll('.' + dayClass);
-                days.forEach(function(day) {
-                    day.classList.remove(toggleClass);
-                    var checkbox = day.querySelector('.form-check-input');
+        //     var modalDate = document.getElementById('modalDayRemove');
+        //     if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-saturday') {
+        //         modalDate.textContent = 'Do you want to remove the selected Saturday?'
+        //     } else if (dayClass === 'fc-day-sun' && toggleClass === 'fc-day-sunday') {
+        //         modalDate.textContent = 'Do you want to remove the selected Sunday?';
+        //     } else if (dayClass === 'fc-day-sat' && toggleClass === 'fc-day-alternate') {
+        //         modalDate.textContent = 'Do you want to remove the alternate Saturday?';
+        //     }
+        //     $('#confirmModal').modal('show');
+        //     document.getElementById('confirmRemove').onclick = function() {
+        //         var days = document.querySelectorAll('.' + dayClass);
+        //         days.forEach(function(day) {
+        //             day.classList.remove(toggleClass);
+        //             var checkbox = day.querySelector('.form-check-input');
 
-                    if (checkbox) {
-                        checkbox.checked = false;
-                    }
+        //             if (checkbox) {
+        //                 checkbox.checked = false;
+        //             }
 
-                });
-                $('#confirmModal').modal('hide');
-            }
-        }
+        //         });
+        //         $('#confirmModal').modal('hide');
+        //     }
+        // }
 
 
         document.getElementById('confirmDelete').addEventListener('click', function() {
@@ -540,6 +563,10 @@
                     .then(data => {
                         if (data.success) {
                             $('#deleteInput').modal('hide');
+                            var checkbox = day.querySelector('.form-check-input');
+                            if (checkbox) {
+                                checkbox.checked = false;
+                            }
                             selectedDateElement.classList.remove('selected-date');
                             console.log('Date removed successfully');
                         } else {
@@ -555,6 +582,50 @@
                     });
 
             }
+        });
+
+
+        document.getElementById('confirmRemove').addEventListener('click', function() {
+            console.log(selectedDateIds,
+                'selectedDateIds'); // Check if selectedDateIds is correctly logged
+
+            // Iterate through each selectedDateId and delete them
+            selectedDateIds.forEach(function(selectedDateId) {
+                fetch(`calendar/${selectedDateId}/delete`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            console.log(`Date ${selectedDateId} removed successfully`);
+                        } else {
+                            console.error(`Failed to remove date ${selectedDateId}`);
+                            alert(
+                                `Failed to remove date ${selectedDateId}. Please try again.`
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(
+                            `An error occurred while removing the date ${selectedDateId}: ${error.message}. Please try again.`
+                        );
+                    });
+            });
+
+            // After all deletions are processed, hide the modal and remove the 'selected-date' class from elements
+            $('#confirmModal').modal('hide');
+            selectedDateElements.forEach(function(selectedDateElement) {
+                selectedDateElement.classList.remove('selected-date');
+            });
         });
 
     });
