@@ -51,16 +51,37 @@ class CalendarController extends Controller
             }
 
         } else {
-            // If 'name' is provided, store data in both Holidays and Holiday_Names tables
-            $holiday = new Holidays;
-            $holiday->holiday_date = $request->input('selected_date');
-            $holiday->user_id = $request->input('user_id');
-            $holiday->save();
 
-            $holiday_names = new Holiday_Names;
-            $holiday_names->holiday_id = $holiday->id;
-            $holiday_names->name = $request->input('name');
-            $holiday_names->save();
+            // If 'name' is provided, store data in both Holidays and Holiday_Names tables
+            $name = $request->input('name');
+            $user_id = $request->input('user_id');
+            $selected_dates = $request->input('selected_date');
+
+            $holiday = Holidays::where('holiday_date', $selected_dates)
+                ->where('user_id', $user_id)
+                ->first();
+        
+            if ($holiday) {
+                // Update the existing holiday
+                $holiday->holiday_date = $selected_dates;
+                $holiday->user_id = $user_id;
+                $holiday->save();
+                $holiday_names = Holiday_Names::updateOrCreate(
+                    ['holiday_id' => $holiday->id],
+                    ['name' => $name]
+                );
+            } else {
+                $holiday = new Holidays;
+                $holiday->holiday_date = $selected_dates;
+                $holiday->user_id = $user_id;
+                $holiday->save();
+
+                $holiday_names = new Holiday_Names([
+                    'holiday_id' => $holiday->id,
+                    'name' => $name,
+                ]);
+                $holiday_names->save();
+            }
         }
         return redirect('calendar');
     }
@@ -68,8 +89,15 @@ class CalendarController extends Controller
 
     public function admin_destroy($id)
     {
-        $calendar = Calendar::find($id);
-        $calendar->delete();
-        return redirect('calendar');
+        $holiday = Holidays::find($id);
+        Holiday_Names::where('holiday_id',$id)->delete();
+       
+        if (!$holiday) {
+            return response()->json(['success' => false, 'message' => 'Holiday not found.'], 404);
+        }
+        
+        $holiday->delete();
+      
+        return response()->json(['success' => true, 'message' => 'Holiday deleted successfully.']);
     }
 }

@@ -583,7 +583,9 @@ function page_url()
     <script src="{{ asset('admin/chartjs/js/Chart.extension.js') }}"></script>
     <script src="{{ asset('admin/js/index.js') }}"></script>
     <script src="{{ asset('https://unpkg.com/feather-icons') }}"></script>
-
+    <script src="{{ asset('admin/plugins/fullcalendar/js/main.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/metismenu/js/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <!--app JS-->
     <script src="{{ asset('admin/js/app.js') }}"></script>
     <script>

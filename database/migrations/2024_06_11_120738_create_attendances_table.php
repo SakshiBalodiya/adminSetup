@@ -17,7 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('userId')->unique();
             $table->enum('status',['checkIn','checkout']);
-            $table->timestamp('date_time');
+            $table->time('date_time');
             $table->timestamps();
             $table->foreign('userId')->references('id')->on('users');
         });
