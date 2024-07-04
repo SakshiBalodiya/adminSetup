@@ -18,22 +18,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-8 col-xl-8">
+                                {{-- <div class="col-lg-8 col-xl-8">
                                     <form class="float-lg-end">
-                                        <div class="row">
-                                            <div class="col-6 g-2">
-                                                <a href="{{ url('addstaff') }}" class="btn btn-primary mb-3 mb-lg-0"><i
-                                                        class='bx bxs-plus-square'></i>Add
-                                                    Staff</a>
-                                            </div>
-                                            <div class="col-6  g-2">
-                                                <a href="{{ url('staff/trash') }}"
-                                                    class="btn btn-primary mb-3 mb-lg-0"><i
-                                                        class='bx bxs-plus-square'></i>Trash</a>
-                                            </div>
+                                        <div class="row row-cols-lg-2 row-cols-xl-auto g-2">
+                                            <a href="{{ url('addstaff') }}" class="btn btn-primary mb-3 mb-lg-0"><i
+                                                    class='bx bxs-plus-square'></i>Add
+                                                Staff</a>
                                         </div>
                                     </form>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -44,13 +37,13 @@
             <hr />
 
             <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
-                @foreach ($staff as $staff)
+                @foreach ($trashStaff as $staff)
                     <div class="col">
                         <div class="card radius-15">
                             <div class="card-body text-center">
                                 <div class="p-4 border radius-15">
 
-                                    <img src="data:image/jpeg;base64,{{ $staff->image }}" width="110" height="110"
+                                    <img src="data:image/jpeg;base64,{{ $staff->image }}"  width="110" height="110"
                                         class="rounded-circle shadow" alt="">
                                     <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
                                     <p class="mb-0">{{ $staff->username }}</p>
@@ -91,7 +84,7 @@
                                 <a type="button" href="#" id="confirm-delete" class="btn btn-danger">Ok</a>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
 

@@ -30,12 +30,11 @@ class StaffController extends Controller
 
        
     
-        $file = $request->file('filename');
-        $image = base64_encode(file_get_contents($file));
+         $file = $request->file('filename');
+        $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
-     
-
-       
+      
+    
         
 
         $users = new User;
@@ -66,7 +65,6 @@ class StaffController extends Controller
             ->select(
                 'staff.id',
                 'staff.image',
-                'staff.descriptor',
                 'staff.created_at',
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', 1) as firstname"),
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', -1) as lastname"),
@@ -94,7 +92,7 @@ class StaffController extends Controller
 
 
 
-        $staff->descriptor = $request->descriptor;
+        $staff->descriptor = 'xyz';
 
         if (!empty($request->image)) {
   
@@ -106,11 +104,17 @@ class StaffController extends Controller
 
         return redirect('staff');
     }
+
+
     public function admin_destroy($id)
     {
         $staff = Staff::find($id);
         $staff->delete();
         return redirect('staff');
     }
-
+    public function admin_trash()
+    {
+        $trashStaff = Staff::onlyTrashed()->select('staff.id', 'staff.image', 'staff.created_at');
+        return view('admin.staff.trash', compact('trashStaff'));
+    }
 }
