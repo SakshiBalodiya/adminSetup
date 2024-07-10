@@ -132,7 +132,7 @@
                                                 required>
 
                                         </div>
-                                    </div>
+                                    </div> 
 
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Image<span>*</span></label>
@@ -258,7 +258,7 @@ console.log("inside form submit")
 
 
     </script>
-=======
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('input[type="file"]').imageuploadify();

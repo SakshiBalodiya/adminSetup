@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\attendance;
 use App\Models\User;
 use App\Models\Staff;
 use DB;
@@ -19,6 +20,14 @@ class StaffController extends Controller
 
         return view('admin.staff.index', compact('staff'));
     }
+    public function admin_trash(Request $request)
+    {
+        $staff = Staff::onlyTrashed()->leftJoin('users as U', 'U.id', 'staff.userId')
+        ->select('U.name as name','U.email as email','staff.id', 'staff.image')
+        ->get();
+        return view('admin.staff.trash', compact('staff'));
+    }
+
     public function admin_create()
     {
         return view('admin.staff.create');
@@ -30,12 +39,11 @@ class StaffController extends Controller
 
        
     
-        $file = $request->file('filename');
-        $image = base64_encode(file_get_contents($file));
+         $file = $request->file('filename');
+        $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
-     
-
-       
+      
+    
         
 
         $users = new User;
@@ -66,7 +74,6 @@ class StaffController extends Controller
             ->select(
                 'staff.id',
                 'staff.image',
-                'staff.descriptor',
                 'staff.created_at',
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', 1) as firstname"),
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', -1) as lastname"),
@@ -94,7 +101,7 @@ class StaffController extends Controller
 
 
 
-        $staff->descriptor = $request->descriptor;
+        $staff->descriptor = 'xyz';
 
         if (!empty($request->image)) {
   
@@ -106,11 +113,26 @@ class StaffController extends Controller
 
         return redirect('staff');
     }
+ 
     public function admin_destroy($id)
-    {
+    {    
+       
         $staff = Staff::find($id);
+        attendance::find($staff->userId)->delete();
+        User::find($staff->userId)->delete();
         $staff->delete();
         return redirect('staff');
     }
-
+    public function force_destroy($id)
+    {
+      Staff::withTrashed()->find($id)->forceDelete();
+  
+      return redirect('staff');
+    }
+    public function restore($id)
+    {
+      Staff::withTrashed()->find($id)->restore();
+  
+      return redirect('staff');
+    }
 }
