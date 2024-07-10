@@ -40,8 +40,8 @@ Route::get('staff/{id}/editstaff', [StaffController::class, 'admin_edit']);
 Route::post('editstaff/update', [StaffController::class, 'admin_update'])->name('editstaff.update');
 Route::get('staff/{id}/delete', [StaffController::class, 'admin_destroy']);
 Route::get('staff/trash', [StaffController::class, 'admin_trash']);
-
-
+Route::get('staff/{id}/forcedelete', [StaffController::class, 'force_destroy']);
+Route::get('staff/{id}/restore', [StaffController::class, 'restore']);
 
 
 

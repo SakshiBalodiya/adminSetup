@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\attendance;
 use App\Models\User;
 use App\Models\Staff;
 use DB;
@@ -19,6 +20,14 @@ class StaffController extends Controller
 
         return view('admin.staff.index', compact('staff'));
     }
+    public function admin_trash(Request $request)
+    {
+        $staff = Staff::onlyTrashed()->leftJoin('users as U', 'U.id', 'staff.userId')
+        ->select('U.name as name','U.email as email','staff.id', 'staff.image')
+        ->get();
+        return view('admin.staff.trash', compact('staff'));
+    }
+
     public function admin_create()
     {
         return view('admin.staff.create');
@@ -104,17 +113,26 @@ class StaffController extends Controller
 
         return redirect('staff');
     }
-
-
+ 
     public function admin_destroy($id)
-    {
+    {    
+       
         $staff = Staff::find($id);
+        attendance::find($staff->userId)->delete();
+        User::find($staff->userId)->delete();
         $staff->delete();
         return redirect('staff');
     }
-    public function admin_trash()
+    public function force_destroy($id)
     {
-        $trashStaff = Staff::onlyTrashed()->select('staff.id', 'staff.image', 'staff.created_at');
-        return view('admin.staff.trash', compact('trashStaff'));
+      Staff::withTrashed()->find($id)->forceDelete();
+  
+      return redirect('staff');
+    }
+    public function restore($id)
+    {
+      Staff::withTrashed()->find($id)->restore();
+  
+      return redirect('staff');
     }
 }

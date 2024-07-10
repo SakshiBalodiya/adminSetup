@@ -19,21 +19,26 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-xl-8">
+                                    <div class="row justify-content-end">
+                                        <div class="col-2 justify-content-end d-flex">
+                                            <a href="{{ url('addstaff') }}" class="btn btn-primary mb-3 mb-lg-0"><i
+                                                    class='bx bxs-plus-square'></i>Add
+                                                Staff</a>
+                                        </div>
+                                        <div class="col-2  justify-content-end d-flex">
+                                            <a href="{{ url('staff/trash') }}" class="btn btn-primary mb-3 mb-lg-0"><i
+                                                    class='bx bxs-plus-square'></i>Trash</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-lg-2 col-xl-2">
                                     <form class="float-lg-end">
-                                        <div class="row">
-                                            <div class="col-6 g-2">
-                                                <a href="{{ url('addstaff') }}" class="btn btn-primary mb-3 mb-lg-0"><i
-                                                        class='bx bxs-plus-square'></i>Add
-                                                    Staff</a>
-                                            </div>
-                                            <div class="col-6  g-2">
-                                                <a href="{{ url('staff/trash') }}"
-                                                    class="btn btn-primary mb-3 mb-lg-0"><i
-                                                        class='bx bxs-plus-square'></i>Trash</a>
-                                            </div>
+                                        <div class="row row-cols-lg-2 row-cols-xl-auto g-2">
+                                            <a href="{{ url('staff/trash') }}" class="btn btn-primary mb-3 mb-lg-0"><i
+                                                    class='bx bxs-plus-square'></i>Trash</a>
                                         </div>
                                     </form>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -50,7 +55,7 @@
                             <div class="card-body text-center">
                                 <div class="p-4 border radius-15">
 
-                                    <img src="data:image/jpeg;base64,{{ $staff->image }}" width="110" height="110"
+                                    <img src="{{ $staff->image }}" width="110" height="110"
                                         class="rounded-circle shadow" alt="">
                                     <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
                                     <p class="mb-0">{{ $staff->username }}</p>
@@ -105,7 +110,6 @@
             const button = event.relatedTarget;
             const staffId = button.getAttribute('data-delete-id');
             const confirmDeleteLink = document.getElementById('confirm-delete');
-
             confirmDeleteLink.href = `staff/${staffId}/delete`;
         });
     });
