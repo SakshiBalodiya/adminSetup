@@ -27,7 +27,6 @@ class UserFactory extends Factory
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'username' => 'admin',
-            'mobileNo' => $this->faker->numerify('##########'),
             'role' => 'admin',
             'password' => '$2a$04$gakgwa1pSu7thZ1aBgxxYO2RFaApGDQViGT2YnYubUMfDlPLBvSp2', // password admin#2021
             'remember_token' => Str::random(10),
