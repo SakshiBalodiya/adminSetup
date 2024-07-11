@@ -58,8 +58,8 @@
                                     <img src="{{ $staff->image }}" width="110" height="110"
                                         class="rounded-circle shadow" alt="">
                                     <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
-                                    <p class="mb-0">{{ $staff->username }}</p>
-                                    <p class="mb-0">{{ $staff->mobileNo }}</p>
+                                    {{-- <p class="mb-0">{{ $staff->username }}</p>
+                                    <p class="mb-0">{{ $staff->mobileNo }}</p> --}}
                                     <p class="mb-3">{{ $staff->email }}</p>
 
                                     <div class="row">

@@ -16,7 +16,7 @@ class StaffController extends Controller
     public function admin_index(Request $request)
     {
         $staff = Staff::leftJoin('users as U', 'U.id', 'staff.userId')
-            ->select('staff.id', 'staff.image', 'staff.created_at', 'U.name as name', 'U.mobileNo as mobileNo', 'U.id as userId', 'U.email', 'U.username')->get();
+            ->select('staff.id', 'staff.image', 'staff.created_at', 'U.name as name', 'U.id as userId', 'U.email')->get();
 
         return view('admin.staff.index', compact('staff'));
     }
@@ -42,15 +42,15 @@ class StaffController extends Controller
          $file = $request->file('filename');
         $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
-      
+
     
         
 
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;
         $users->email = $request->email;
-        $users->username = $request->username;
-        $users->mobileNo = $request->mobileNo;
+        // $users->username = $request->username;
+        // $users->mobileNo = $request->mobileNo;
         $users->role = 'staff';
         $users->password = Hash::make($request->password);
         $users->save();
@@ -126,13 +126,11 @@ class StaffController extends Controller
     public function force_destroy($id)
     {
       Staff::withTrashed()->find($id)->forceDelete();
-  
       return redirect('staff');
     }
     public function restore($id)
     {
       Staff::withTrashed()->find($id)->restore();
-  
       return redirect('staff');
     }
 }
