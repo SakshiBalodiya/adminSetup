@@ -23,34 +23,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 
-
-
+Route::get('/dashboard', function () {
+    return view('/dashboard');
+})->middleware(['auth'])->name('dashboard');
 Auth::routes();
-Route::get('dashboard', [DashboardController::class, 'admin_index']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('staff', [StaffController::class, 'admin_index']);
+    Route::get('addstaff', [StaffController::class, 'admin_create']);
+    Route::post('addstaff/store', [StaffController::class, 'admin_store'])->name('addstaff.store');
+    Route::get('staff/{id}/editstaff', [StaffController::class, 'admin_edit']);
+    Route::post('editstaff/update', [StaffController::class, 'admin_update'])->name('editstaff.update');
+    Route::get('staff/{id}/delete', [StaffController::class, 'admin_destroy']);
+    Route::get('staff/trash', [StaffController::class, 'admin_trash']);
+    Route::get('staff/{id}/forcedelete', [StaffController::class, 'force_destroy']);
+    Route::get('staff/{id}/restore', [StaffController::class, 'restore']);
 
-Route::get('staff', [StaffController::class, 'admin_index']);
-Route::get('addstaff', [StaffController::class, 'admin_create']);
-Route::post('addstaff/store', [StaffController::class, 'admin_store'])->name('addstaff.store');
-Route::get('staff/{id}/editstaff', [StaffController::class, 'admin_edit']);
-Route::post('editstaff/update', [StaffController::class, 'admin_update'])->name('editstaff.update');
-Route::get('staff/{id}/delete', [StaffController::class, 'admin_destroy']);
 
-Route::get('attendance', [AttendanceController::class, 'admin_index']);
 
-Route::get('profile', [ProfileController::class, 'index']);
-Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('attendance', [AttendanceController::class, 'admin_index']);
 
-Route::get('calendar', [CalendarController::class, 'admin_index']);
-Route::post('calendar/store', [CalendarController::class, 'admin_store'])->name('calendar.store');
-Route::get('calendar/{id}/delete', [CalendarController::class, 'admin_destroy']);
+    Route::get('profile', [ProfileController::class, 'index']);
+    Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::get('report', [ReportController::class, 'admin_index']);
+    Route::get('calendar', [CalendarController::class, 'admin_index']);
+    Route::post('calendar/store', [CalendarController::class, 'admin_store'])->name('calendar.store');
+    Route::get('calendar/{id}/delete', [CalendarController::class, 'admin_destroy']);
 
-Route::get('settings', [SettingsController::class, 'admin_index']);
-Route::post('settings/update', [SettingsController::class, 'admin_update'])->name('settings.update');
-Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
+    Route::get('report', [ReportController::class, 'admin_index']);
+
+    Route::get('settings', [SettingsController::class, 'admin_index']);
+    Route::post('settings/update', [SettingsController::class, 'admin_update'])->name('settings.update');
+  
+});

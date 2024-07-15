@@ -3521,3 +3521,6 @@ input::placeholder {
 .modal-header{
     background-color: #F1F3F4;
 }
+.text_capitalize{
+    text-transform: capitalize;
+}
