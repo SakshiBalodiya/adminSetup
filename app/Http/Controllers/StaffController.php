@@ -36,9 +36,11 @@ class StaffController extends Controller
     public function admin_store(Request $request)
     {
 
+
         $file = $request->file('filename');
         $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
+
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;
         $users->email = $request->email;

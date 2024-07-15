@@ -2,7 +2,9 @@
 
 <head>
     <!--  <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script> -->
+
     <script src="{{ mix('js/app.js') }}" defer></script>
+
 </head>
 
 <div class="wrapper">
@@ -144,8 +146,12 @@
                                         <input id="imageUpload" type="file" name="filename" class="form-control"
                                             id="inputGroupFile01" aria-label="default input example"
                                             accept=".jpg,.jpeg,.png" required>
-                                        <img id="uploadedImage" style="display: none;">
-                                        <input type="hidden" id="descriptor" name="descriptor">
+
+                                              <img id="uploadedImage" style="display: none;">
+                                               <input type="hidden" id="descriptor" name="descriptor" >
+                                               <canvas id="canvasOutput" style="display:none"></canvas>
+                                               <canvas id="detectionCanvas"></canvas>
+
                                     </div>
 
                                     <div class="col-12 btn-align">
@@ -161,6 +167,149 @@
     </div>
 </div>
 
+
+
+   
+    <script>
+
+       document.getElementById('imageUpload').addEventListener('change', handleImage);
+
+async function handleImage(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const image = document.getElementById('uploadedImage');
+            image.src = e.target.result;
+            image.style.display = 'block';
+
+            image.onload = async () => {
+                console.log("Image loaded, starting face detection.");
+                console.log(`Image size: ${image.naturalWidth}x${image.naturalHeight}`);
+                
+                // Resize image before detection
+                const resizedImage = await resizeImage(image, 300, 300); // Adjust dimensions as needed
+                console.log('resize image',resizedImage)
+                 //console.log(`resize image size: ${resizedImage.naturalWidth}x${resizedImage.naturalHeight}`);
+                await detectFaces(resizedImage);
+            };
+            
+            image.onerror = () => {
+                console.error('Error loading image');
+                alert('Failed to load image. Please try a different image.');
+            };
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+async function resizeImage(imageElement, width, height) {
+    return new Promise((resolve) => {
+        console.log("inside resize image")
+        const canvas = document.getElementById('canvasOutput');
+        const ctx = canvas.getContext('2d');
+        canvas.width = width;
+        canvas.height = height;
+        console.log("canvas height", canvas.width,'canvas width', canvas.height)
+        ctx.drawImage(imageElement, 0, 0, width, height);
+        const resizedImage = new Image();
+        resizedImage.onload = () => resolve(resizedImage);
+        resizedImage.src = canvas.toDataURL();
+    });
+}
+
+async function detectFaces(image) {
+    console.log('inside detect faces')
+    console.log(`resize image size: ${image.naturalWidth}x${image.naturalHeight}`);
+    try {
+        // Load face detection and recognition models
+      /*   await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+        await faceapi.nets.faceRecognitionNet.loadFromUri('/models'); */
+
+        // Detect face with landmarks and descriptor
+        const detection = await faceapi.detectSingleFace(image)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+        if (detection && detection.descriptor) {
+            console.log("Face detected. Descriptor value: ", detection.descriptor);
+            const descriptorJson = JSON.stringify(detection.descriptor);
+            document.getElementById('descriptor').value = descriptorJson;
+            
+            // Draw the detection results on the canvas
+            drawDetectionResults(image, detection);
+        } else {
+            console.error('No face detected or descriptor is undefined.');
+            alert('No face detected. Please try another image.');
+        }
+    } catch (error) {
+        console.error('Error during face detection:', error);
+        alert('An error occurred during face detection. Please try again.');
+    }
+}
+
+function drawDetectionResults(image, detection) {
+    const canvas = document.getElementById('detectionCanvas');
+    faceapi.matchDimensions(canvas, { width: image.width, height: image.height });
+    const resizedDetection = faceapi.resizeResults(detection, { width: image.width, height: image.height });
+    faceapi.draw.drawDetections(canvas, resizedDetection);
+    faceapi.draw.drawFaceLandmarks(canvas, resizedDetection);
+}
+
+
+    /*   document.getElementById('imageUpload').addEventListener('change', handleImage);
+
+async function handleImage(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const image = document.getElementById('uploadedImage');
+            console.log('image',image)
+            image.src = e.target.result;
+            console.log(e.target.result)
+            image.style.display = 'block';
+
+          
+            image.onload = async () => {
+                console.log("Image loaded, starting face detection.");
+                console.log(`Image size: ${image.naturalWidth}x${image.naturalHeight}`);
+                await detectFaces(image);
+            };
+            
+           
+            image.onerror = () => {
+                console.error('Error loading image');
+                alert('Failed to load image. Please try a different image.');
+            };
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+async function detectFaces(image) {
+    try {
+  
+            const detection = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
+             
+        if (detection && detection.descriptor) {
+            console.log("Face detected. Descriptor value: ", detection.descriptor);
+            const descriptorJson = JSON.stringify(detection.descriptor);
+            document.getElementById('descriptor').value = descriptorJson;
+        } else {
+            console.error('No face detected or descriptor is undefined.');
+            alert('No face detected. Please try another image.');
+        }
+    } catch (error) {
+        console.error('Error during face detection:', error);
+        alert('An error occurred during face detection. Please try again.');
+    }
+} */
+
+
+   /*       
+     document.getElementById('imageUpload').addEventListener('change', handleImage);
 
 
 
@@ -181,35 +330,32 @@
                 // Ensure the image has loaded before running face detection
                 image.onload = async () => {
                     await detectFaces(image);
+
                 };
             };
             reader.readAsDataURL(input.files[0]);
         }
     }
 
-    async function detectFaces(image) {
-        try {
 
-            // Use faceapi imported from app.js
-            const detections = await faceapi.detectAllFaces(image)
-                .withFaceLandmarks()
-                .withFaceDescriptors();
-            console.log(detections[0].descriptor)
+        async function detectFaces(image) {
+            try {
+             
+                // Use faceapi imported from app.js
+                const detections = await faceapi.detectSingleFace(image)
+                    .withFaceLandmarks()
+                    .withFaceDescriptor();
+                console.log("descriptor value ",detections.descriptor)
+         
+              
+               const descriptorJson = JSON.stringify(detections.descriptor);
 
+        document.getElementById('descriptor').value = detections.descriptor;
+            } catch (error) {
+                console.error('Error during face detection:', error);
+            }
+        } */
 
-            const descriptorJson = JSON.stringify(detections[0].descriptor);
-
-            document.getElementById('descriptor').value = detections[0].descriptor;
-        } catch (error) {
-            console.error('Error during face detection:', error);
-        }
-    }
-
-    $('form').on('submit', function(event) {
-
-        console.log("inside form submit")
-        //event.preventDefault(); 
-        var name = document.getElementById('validationCustom01').value;
 
 
         var lastName = document.getElementById('validationCustom02').value;
@@ -260,6 +406,7 @@
 
     });
 </script>
+
 
 <script type="text/javascript">
     $(document).ready(function() {

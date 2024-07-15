@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log("faceapi", faceapi)
 
         // Load the models
+        await faceapi.nets.mtcnn.loadFromUri(url);
+        await faceapi.nets.tinyYolov2.loadFromUri(url);
+        await faceapi.nets.tinyFaceDetector.loadFromUri(url);
         await faceapi.nets.ssdMobilenetv1.loadFromUri(url);
         await faceapi.nets.faceLandmark68Net.loadFromUri(url);
         await faceapi.nets.faceRecognitionNet.loadFromUri(url);

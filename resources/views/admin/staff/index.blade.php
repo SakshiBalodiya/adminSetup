@@ -55,7 +55,9 @@
                             <div class="card-body text-center">
                                 <div class="p-4 border radius-15">
 
+
                                     <img src="{{ $staff->image }}" width="110" height="110"
+
                                         class="rounded-circle shadow" alt="">
                                     <h5 class="mb-0 mt-5 text_capitalize">{{ $staff->name }}</h5>
                                     {{-- <p class="mb-0">{{ $staff->username }}</p>
