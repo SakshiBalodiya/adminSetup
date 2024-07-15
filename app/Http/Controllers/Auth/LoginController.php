@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
@@ -50,10 +52,7 @@ class LoginController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-     
-        $user = Auth::user();
-        return redirect('/dashboard');
+        return redirect()->intended(RouteServiceProvider::HOME);
 
     }
     public function destroy(Request $request)

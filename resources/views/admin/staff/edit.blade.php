@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password</label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-lock"></i></span>
@@ -75,8 +75,8 @@
                                         <div id="password-warning" class="text-warning" style="display:none">
                                             Password should be at least 8 characters long.
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    </div> --}}
+                                    {{-- <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Confirm Password</label>
                                         <div class="input-group"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-lock"></i></span>
@@ -86,7 +86,7 @@
                                         <div id="confirm-password-warning" class="text-warning" style="display:none">
                                             Passwords do not match.
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Phone Number</label>
                                         <div class="input-group"> <span class="input-group-text"
@@ -101,13 +101,25 @@
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Image</label>
                                         <input type="file" class="form-control" name="image"
-                                            value="{{ $staff->image }}" id="inputGroupFile01"
+                                            value="{{ $staff->image }}" id="imageUpload" 
                                             accept=".jpg,.jpeg,.png">
-                                        <p> <img src="{{ $staff->image }}" width="110" height="110"
+                                        <p> <img src="{{ $staff->image }}"  id="uploadedImage" width="110" height="110"
                                                 class="rounded-circle shadow" alt="">
-                                                <input type="hidden" id="descriptor" name="descriptor" >
+                                                <input type="hidden" id="descriptor" name="descriptor" value="{{ $staff->descriptor }}">
                                             </p>
                                     </div>
+
+
+                                    {{-- <div class="col-md-6">
+                                        <label for="validationCustomUsername"
+                                            class="form-label">Image<span>*</span></label>
+                                        <input id="imageUpload" type="file" name="filename" class="form-control"
+                                            id="inputGroupFile01" aria-label="default input example"
+                                            accept=".jpg,.jpeg,.png" required>
+                                        <img id="uploadedImage" style="display: none;">
+                                        <input type="hidden" id="descriptor" name="descriptor">
+                                    </div> --}}
+
                                     <div class="col-12 btn-align">
                                         <input type="text" value="{{ $staff->id }}" name="id" hidden>
                                         <button class="btn btn-primary" type="submit"
@@ -122,6 +134,106 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('imageUpload').addEventListener('change', handleImage);
+
+    async function handleImage(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const image = document.getElementById('uploadedImage');
+                image.src = e.target.result;
+                image.style.display = 'block';
+
+                // Ensure the image has loaded before running face detection
+                image.onload = async () => {
+                    await detectFaces(image);
+                };
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    async function detectFaces(image) {
+        try {
+
+            // Use faceapi imported from app.js
+            const detections = await faceapi.detectAllFaces(image)
+                .withFaceLandmarks()
+                .withFaceDescriptors();
+            console.log(detections[0].descriptor)
+
+
+            const descriptorJson = JSON.stringify(detections[0].descriptor);
+
+            document.getElementById('descriptor').value = detections[0].descriptor;
+        } catch (error) {
+            console.error('Error during face detection:', error);
+        }
+    }
+
+    $('form').on('submit', function(event) {
+
+        console.log("inside form submit")
+        //event.preventDefault(); 
+        var name = document.getElementById('validationCustom01').value;
+
+
+        var lastName = document.getElementById('validationCustom02').value;
+        // var username = document.getElementById('username').value;
+        // var mobileNo = document.getElementById('mobileNo').value;
+        var descriptor = document.getElementById('descriptor').value;
+
+
+
+        //  var image = document.getElementById('imageUpload').value; 
+        console.log(name, 'name');
+        console.log(lastName, 'lastName');
+        console.log(username, 'username');
+        console.log(mobileNo, 'mobileNo');
+
+        // console.log(image,'image');
+        console.log("descriptor", descriptor)
+
+
+
+        var data = {
+
+            name: name,
+            lastName: lastName,
+            mobileNo: mobileNo,
+            image: image,
+            descriptor: descriptor
+        };
+
+        $.ajax({
+
+
+            url: '{{ route('addstaff.store') }}',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: $.param(data), // Properly serialize the data
+            method: 'POST',
+
+
+            success: function(response) {
+                console.log("response", response)
+            },
+            error: function(xhr, status, error) {
+
+                console.error('Error:', error);
+            }
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('input[type="file"]').imageuploadify();
+    })
+</script>
 <script>
     $(document).ready(function() {
         $('#input4').on('input', function() {

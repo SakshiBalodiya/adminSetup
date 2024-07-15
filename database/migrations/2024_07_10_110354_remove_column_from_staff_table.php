@@ -13,9 +13,9 @@ class RemoveColumnFromStaffTable extends Migration
      */
     public function up()
     {
-        Schema::table('staff', function (Blueprint $table) {
-            $table->dropColumn('descriptor');
-        });
+        // Schema::table('staff', function (Blueprint $table) {
+        //     $table->dropColumn('descriptor');
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class RemoveColumnFromStaffTable extends Migration
      */
     public function down()
     {
-        Schema::table('staff', function (Blueprint $table) {
-            $table->string('descriptor')->nullable(); 
-        });
+        // Schema::table('staff', function (Blueprint $table) {
+        //     $table->string('descriptor')->nullable(); 
+        // });
     }
 }

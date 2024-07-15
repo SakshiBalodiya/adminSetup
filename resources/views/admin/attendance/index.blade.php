@@ -37,10 +37,10 @@
                                     <tbody>
                                          @foreach($attendance as $attendances)
                                         <tr>
-                                            <td>{{$attendances->name}}</td>
-                                            <td>{{date('d-m-Y', strtotime($attendances->created_at))}}</td>
-                                            <td>{{$attendances->date_time}}</td>
-                                            <td>{{$attendances->status}}</td>
+                                            <td class="text_capitalize">{{$attendances->name}}</td>
+                                            <td class="text_capitalize">{{date('d-m-Y', strtotime($attendances->created_at))}}</td>
+                                            <td class="text_capitalize">{{$attendances->date_time}}</td>
+                                            <td class="text_capitalize">{{$attendances->status}}</td>
                                         </tr>
                                           @endforeach
                                     </tbody>
