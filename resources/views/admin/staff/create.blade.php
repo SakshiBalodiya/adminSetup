@@ -54,7 +54,7 @@
 
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <label for="validationCustomUsername"
                                             class="form-label">Username<span>*</span></label>
                                         <div class="input-group has-validation"> <span class="input-group-text"
@@ -71,7 +71,7 @@
                                         @if ($errors->has('username'))
                                             <div class="alert alert-danger">{{ $errors->first('username') }}</div>
                                         @endif
-                                    </div> --}}
+                                    </div>
                                     <div class="col-md-6">
 
                                         <label for="validationCustomUsername"
@@ -126,7 +126,7 @@
                                         </div>
                                     </div> --}}
 
-                                    {{-- <div class="col-md-6">
+                                    <div class="col-md-6">
                                         <label for="validationCustomUsername" class="form-label">Phone
                                             Number<span>*</span></label>
                                         <div class="input-group"> <span class="input-group-text"
@@ -136,7 +136,7 @@
                                                 aria-describedby="inputGroupPrepend" required>
 
                                         </div>
-                                    </div> --}}
+                                    </div>
 
                                     <div class="col-md-6">
                                         <label for="validationCustomUsername"

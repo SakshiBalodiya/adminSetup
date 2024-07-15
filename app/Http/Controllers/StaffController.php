@@ -16,7 +16,7 @@ class StaffController extends Controller
     public function admin_index(Request $request)
     {
         $staff = Staff::leftJoin('users as U', 'U.id', 'staff.userId')
-            ->select('staff.id', 'staff.image', 'staff.created_at', 'U.name as name', 'U.id as userId', 'U.email')->get();
+            ->select('staff.id', 'staff.image', 'staff.created_at', 'U.name as name', 'U.userName as username', 'U.id as userId', 'U.email')->get();
 
         return view('admin.staff.index', compact('staff'));
     }
@@ -36,21 +36,14 @@ class StaffController extends Controller
     public function admin_store(Request $request)
     {
 
-
-       
-    
-         $file = $request->file('filename');
+        $file = $request->file('filename');
         $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
-
-    
-        
-
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;
         $users->email = $request->email;
-        // $users->username = $request->username;
-        // $users->mobileNo = $request->mobileNo;
+        $users->username = $request->username;
+        $users->mobileNo = $request->mobileNo;
         $users->role = 'staff';
         $users->password = Hash::make($request->password);
         $users->save();
@@ -74,13 +67,14 @@ class StaffController extends Controller
             ->select(
                 'staff.id',
                 'staff.image',
+                'staff.descriptor',
                 'staff.created_at',
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', 1) as firstname"),
                 DB::raw("SUBSTRING_INDEX(U.name, ' ', -1) as lastname"),
                 'U.mobileNo as mobileNo',
                 'U.id as userId',
+                'U.userName as username',
                 'U.email',
-                'U.username'
             )
             ->where('staff.id', $id)->first();
 
@@ -101,7 +95,7 @@ class StaffController extends Controller
 
 
 
-        $staff->descriptor = 'xyz';
+        $staff->descriptor = $request->descriptor;
 
         if (!empty($request->image)) {
   
@@ -118,8 +112,9 @@ class StaffController extends Controller
     {    
        
         $staff = Staff::find($id);
-        attendance::find($staff->userId)->delete();
-        User::find($staff->userId)->delete();
+        
+        // attendance::find($staff->userId)->delete();
+        // User::find($staff->userId)->delete();
         $staff->delete();
         return redirect('staff');
     }

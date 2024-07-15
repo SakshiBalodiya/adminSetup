@@ -20,12 +20,12 @@
                                 </div>
                                 <div class="col-lg-8 col-xl-8">
                                     <div class="row justify-content-end">
-                                        <div class="col-2 justify-content-end d-flex">
+                                        <div class="col-3 justify-content-end d-flex">
                                             <a href="{{ url('addstaff') }}" class="btn btn-primary mb-3 mb-lg-0"><i
                                                     class='bx bxs-plus-square'></i>Add
                                                 Staff</a>
                                         </div>
-                                        <div class="col-2  justify-content-end d-flex">
+                                        <div class="col-1 justify-content-end d-flex">
                                             <a href="{{ url('staff/trash') }}" class="btn btn-primary mb-3 mb-lg-0"><i
                                                     class='bx bxs-plus-square'></i>Trash</a>
                                         </div>
@@ -57,7 +57,7 @@
 
                                     <img src="{{ $staff->image }}" width="110" height="110"
                                         class="rounded-circle shadow" alt="">
-                                    <h5 class="mb-0 mt-5">{{ $staff->name }}</h5>
+                                    <h5 class="mb-0 mt-5 text_capitalize">{{ $staff->name }}</h5>
                                     {{-- <p class="mb-0">{{ $staff->username }}</p>
                                     <p class="mb-0">{{ $staff->mobileNo }}</p> --}}
                                     <p class="mb-3">{{ $staff->email }}</p>

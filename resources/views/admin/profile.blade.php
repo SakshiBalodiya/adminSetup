@@ -7,7 +7,7 @@
                 <div class="card" id="profile_card">
                     <div class="card-body p-4">
                         <div class="my-4 text-center">
-                            <h5>{{ Auth::user()->name }}</h5>
+                            <h5 class="text_capitalize">{{ Auth::user()->name }}</h5>
 
                         </div>
                         <form method="post" action="{{ route('profile.update') }}" class="row g-3">
@@ -16,7 +16,7 @@
                                 <label for="input25" class="form-label">Full Name</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                    <input type="text" class="form-control" id="name" name ="name"
+                                    <input type="text" class="form-control text_capitalize" id="name" name ="name"
                                         value="{{ $users->name }}" placeholder="Full Name">
                                 </div>
                             </div>
