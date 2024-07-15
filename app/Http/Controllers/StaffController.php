@@ -31,12 +31,9 @@ class StaffController extends Controller
        
     
          $file = $request->file('filename');
-        $image = base64_encode(file_get_contents($file));
+        $image = "data:image/png;base64,".base64_encode(file_get_contents($file));
         $descriptor=$request->descriptor;
      
-
-       
-        
 
         $users = new User;
         $users->name = $request->firstname . ' ' . $request->lastname;

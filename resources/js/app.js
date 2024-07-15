@@ -12,11 +12,14 @@ window.Vue = require('vue').default;
 import * as faceapi from 'face-api.js';
 
 async function loadModels() {
-    const modelPath = '/models';
-    await faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath);
-    await faceapi.nets.faceLandmark68Net.loadFromUri(modelPath);
-    await faceapi.nets.faceRecognitionNet.loadFromUri(modelPath);
-    await faceapi.nets.faceExpressionNet.loadFromUri(modelPath);
+    var url = "./models";
+    await faceapi.nets.mtcnn.loadFromUri(url);
+    await faceapi.nets.tinyYolov2.loadFromUri(url);
+    await faceapi.nets.tinyFaceDetector.loadFromUri(url);
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(url);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(url);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(url);
+    await faceapi.nets.faceExpressionNet.loadFromUri(url);
 }
 
 window.faceapi = faceapi;
