@@ -22,8 +22,12 @@ async function loadModels() {
     await faceapi.nets.faceExpressionNet.loadFromUri(url);
 }
 
-window.faceapi = faceapi;
-window.loadFaceApiModels = loadModels;
+window.faceapi = new faceapi;
+window.loadFaceApiModels = loadModels();
+
+
+
+
 
 // Automatically load models when the app loads
 document.addEventListener('DOMContentLoaded', loadModels);

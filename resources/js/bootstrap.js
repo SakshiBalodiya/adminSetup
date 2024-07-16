@@ -13,7 +13,7 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-import * as faceapi from 'face-api.js';
+/* import * as faceapi from 'face-api.js';
 import { tinyFaceDetector, detectAllFaces, FaceMatcher, detectSingleFace, createCanvasFromMedia, TinyFaceDetectorOptions, nets, bufferToImage, ssdMobilenetv1, loadTinyFaceDetectorModel, loadSsdMobilenetv1Model, loadTinyYolov2Model, loadAgeGenderModel, loadFaceRecognitionModel, loadFaceDetectionModel, loadFaceExpressionModel, loadFaceLandmarkModel, loadFaceLandmarkTinyModel, SsdMobilenetv1, resizeResults, draw, FaceLandmarks68, tf, fetchNetWeights, TinyFaceDetector, env, euclideanDistance, fetchImage } from 'face-api.js'
 
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 });
-export default faceapi;
+export default faceapi; */
 
 
 

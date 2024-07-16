@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('attendance', [AttendanceController::class, 'admin_index']);
+    Route::get('export/{id}', [AttendanceController::class, 'export']);
 
     Route::get('profile', [ProfileController::class, 'index']);
     Route::post('profile/update', [ProfileController::class, 'update'])->name('profile.update');

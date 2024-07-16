@@ -3,7 +3,7 @@
 <head>
     <!--  <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script> -->
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="./public/js/app.js"></script>
 
 </head>
 
@@ -36,8 +36,6 @@
                                 <form class="row g-3 needs-validation" method="post" enctype="multipart/form-data"
                                     action="{{ route('addstaff.store') }}"novalidate>
 
-
-
                                     @csrf
                                     <div class="col-md-6">
                                         <label class="form-label">First name<span>*</span></label>
@@ -53,7 +51,6 @@
                                                 id="inputGroupPrepend"><i class="bx bx-user"></i></span>
                                             <input type="text" name="lastname" class="form-control" value=""
                                                 required>
-
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -61,9 +58,6 @@
                                             class="form-label">Username<span>*</span></label>
                                         <div class="input-group has-validation"> <span class="input-group-text"
                                                 id="inputGroupPrepend"><i class="bx bx-user"></i></span>
-
-
-
                                             <input type="text" name="username" class="form-control"
                                                 id="validationCustomUsername" aria-describedby="inputGroupPrepend"
                                                 required>
@@ -90,7 +84,6 @@
                                             <div class="alert alert-danger">{{ $errors->first('email') }}</div>
                                         @endif
                                     </div>
-
                                     {{-- <input type="file" name="image" class="form-control" id="inputGroupFile01"  accept=".jpg,.jpeg,.png"> --}}
                                     {{-- <div class="col-md-6">
                                         <label for="validationCustom05" class="form-label">Password<span>*</span></label>
@@ -151,9 +144,7 @@
                                                <input type="hidden" id="descriptor" name="descriptor" >
                                                <canvas id="canvasOutput" style="display:none"></canvas>
                                                <canvas id="detectionCanvas"></canvas>
-
                                     </div>
-
                                     <div class="col-12 btn-align">
                                         <button class="btn btn-primary" type="submit">Add Staff</button>
                                     </div>
@@ -166,13 +157,8 @@
         </div>
     </div>
 </div>
-
-
-
-   
-    <script>
-
-       document.getElementById('imageUpload').addEventListener('change', handleImage);
+ <script>
+       /* document.getElementById('imageUpload').addEventListener('change', handleImage);
 
 async function handleImage(event) {
     const input = event.target;
@@ -188,7 +174,7 @@ async function handleImage(event) {
                 console.log(`Image size: ${image.naturalWidth}x${image.naturalHeight}`);
                 
                 // Resize image before detection
-                const resizedImage = await resizeImage(image, 300, 300); // Adjust dimensions as needed
+                const resizedImage = await resizeImage(image, 492, 860); // Adjust dimensions as needed
                 console.log('resize image',resizedImage)
                  //console.log(`resize image size: ${resizedImage.naturalWidth}x${resizedImage.naturalHeight}`);
                 await detectFaces(resizedImage);
@@ -222,12 +208,7 @@ async function detectFaces(image) {
     console.log('inside detect faces')
     console.log(`resize image size: ${image.naturalWidth}x${image.naturalHeight}`);
     try {
-        // Load face detection and recognition models
-      /*   await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('/models'); */
-
-        // Detect face with landmarks and descriptor
+       
         const detection = await faceapi.detectSingleFace(image)
             .withFaceLandmarks()
             .withFaceDescriptor();
@@ -237,7 +218,7 @@ async function detectFaces(image) {
             const descriptorJson = JSON.stringify(detection.descriptor);
             document.getElementById('descriptor').value = descriptorJson;
             
-            // Draw the detection results on the canvas
+            
             drawDetectionResults(image, detection);
         } else {
             console.error('No face detected or descriptor is undefined.');
@@ -255,10 +236,12 @@ function drawDetectionResults(image, detection) {
     const resizedDetection = faceapi.resizeResults(detection, { width: image.width, height: image.height });
     faceapi.draw.drawDetections(canvas, resizedDetection);
     faceapi.draw.drawFaceLandmarks(canvas, resizedDetection);
-}
+
+    
+} */
 
 
-    /*   document.getElementById('imageUpload').addEventListener('change', handleImage);
+       document.getElementById('imageUpload').addEventListener('change', handleImage);
 
 async function handleImage(event) {
     const input = event.target;
@@ -305,7 +288,7 @@ async function detectFaces(image) {
         console.error('Error during face detection:', error);
         alert('An error occurred during face detection. Please try again.');
     }
-} */
+} 
 
 
    /*       
@@ -404,15 +387,15 @@ async function detectFaces(image) {
             }
         });
 
-    });
+    
 </script>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function() {
         $('input[type="file"]').imageuploadify();
     })
-</script>
+</script> -->
 <script>
     $(document).ready(function() {
         $('#input4').on('input', function() {
