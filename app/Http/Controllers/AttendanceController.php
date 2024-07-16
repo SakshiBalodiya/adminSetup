@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use App\Models\attendance;
 use App\Http\Requests\StoreattendanceRequest;
 use App\Http\Requests\UpdateattendanceRequest;
 use Illuminate\Support\Facades\DB;
-
+use App\Helper\StaffExport;
+use Maatwebsite\Excel\Facades\Excel;
 class AttendanceController extends Controller
 {
     /**
@@ -22,6 +23,14 @@ class AttendanceController extends Controller
             ->select('U.name as name', 'U.role', 'AT.date_time', 'AT.status', 'AT.created_at', 'AT.updated_at', 'U.id')
             ->get();
         return view('admin.attendance.index', compact('attendance'));
+    }
+
+    public function export($id) 
+    {
+       // $userId = $request->input('user_id');
+        $userId = $id;
+        $users=User::find($id);
+        return Excel::download(new StaffExport($userId), $users->name . $userId . '.xlsx');
     }
 
     /**

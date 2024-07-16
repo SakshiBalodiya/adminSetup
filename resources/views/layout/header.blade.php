@@ -31,7 +31,7 @@ function page_url()
     <!-- loader-->
     <link href="{{ asset('admin/css/pace.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('admin/js/pace.min.js') }}"></script>
-    {{-- <script src="public\js\app.js"></script> --}}
+     <script src="public\js\app.js"></script> 
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('admin/css/bootstrap.min.css') }}" rel="stylesheet">

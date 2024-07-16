@@ -4,17 +4,22 @@
         <div class="page-content">
             <div class="row">
                 <div class="col-12">
+                   
                     <div class="card">
+                         <form class="float-lg-end" method="GET">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-lg-4 col-xl-4">
+                                    
                                     <div class="col">
+                                       
                                         <div class="position-relative">
-                                            <input type="text" class="form-control ps-5"
+                                            <input type="text"  name="search" value="{{$search}}" class="form-control ps-5"
                                                 placeholder="Search Staff Name">
                                             <span class="position-absolute top-50 product-show translate-middle-y"><i
                                                     class="bx bx-search"></i></span>
                                         </div>
+                                        <button type="submit"  class="btn btn-primary mb-3 mb-lg-0">Search</button>
                                     </div>
                                 </div>
 
@@ -29,16 +34,17 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-xl-5">
-                                    <form class="float-lg-end">
+                                   
                                         <div class="row row-cols-lg-2 row-cols-xl-auto g-2">
                                             <a href="#" 
-                                                class="btn btn-primary mb-3 mb-lg-0"><i class='bx bx-cloud-upload'></i>Export</a>
+                                                class="btn btn-primary mb-3 mb-lg-0" name="export"><i class='bx bx-cloud-upload'></i>Export</a>
                                         </div>
-                                    </form>
+                                   
                                 </div>
                             </div>
                         </div>
                     </div>
+                     </form>
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -52,16 +58,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                           @foreach($staff as $staffs)
                                         <tr>
-                                            <td>Rohan</td>
-                                            <td>rohan@7823gmail.com</td>
-                                            <td>9382981898</td>
-                                            <td><a class="btn btn-primary action_btn"><i class="bx bx-cloud-upload"></i></a>
+                                            <td>{{$staffs->name}}</td>
+                                            <td>{{$staffs->email}}</td>
+                                            <td>{{$staffs->mobileNo}}</td>
+                                            <td><a class="btn btn-primary action_btn" href="{{url('/export/'.$staffs->id)}}" ><i class="bx bx-cloud-upload"></i></a>
                                             </td>
                                         </tr>
+                                           @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                              <div class="pagination text-center pt-3">
+    				{{ $staff->appends(array('search' => $search))->links() }}
+    		  </div>
                         </div>
                     </div>
                 </div>
@@ -132,4 +143,13 @@
             dateFormat: "Y-m-d",
         });
     });
+
+
+document.getElementById('exportId').addEventListener('click', loadExport);
+
+function loadExport(event) {
+  const exportId = event.currentTarget.getAttribute('data-id');
+  console.log('export id', exportId);
+  // Your export functionality here
+}
 </script>

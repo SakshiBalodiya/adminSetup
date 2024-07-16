@@ -16,6 +16,7 @@ class StaffController extends Controller
     public function admin_index(Request $request)
     {
         $staff = Staff::leftJoin('users as U', 'U.id', 'staff.userId')
+                  ->leftJoin('attendances as AT','AT.userId','U.id')
             ->select('staff.id', 'staff.image', 'staff.created_at', 'U.name as name', 'U.userName as username', 'U.id as userId', 'U.email')->get();
 
         return view('admin.staff.index', compact('staff'));
